@@ -14,7 +14,7 @@ public class PmdToolWindowFactory implements ToolWindowFactory {
     @Override
     public void createToolWindowContent(@NotNull final Project project, @NotNull final ToolWindow toolWindow) {
         final ContentFactory contentFactory = toolWindow.getContentManager().getFactory();
-        final Content content = contentFactory.createContent(new PmdToolPanel(project), "Scan", false);
+        final Content content = contentFactory.createContent(new PmdToolPanel(project), null, false);
         toolWindow.getContentManager().addContent(content);
     }
 

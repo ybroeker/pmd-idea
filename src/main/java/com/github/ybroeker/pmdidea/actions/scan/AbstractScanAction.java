@@ -34,7 +34,7 @@ public abstract class AbstractScanAction extends AnAction {
 
         final ToolWindow toolWindow = ToolWindowManager.getInstance(project).getToolWindow(PmdToolWindowFactory.TOOL_WINDOW_ID);
 
-        final PmdToolPanel scan = (PmdToolPanel) toolWindow.getContentManager().findContent("Scan").getComponent();
+        final PmdToolPanel scan = (PmdToolPanel) toolWindow.getContentManager().getContent(0).getComponent();
 
         final List<File> files = getFiles(project);
 
