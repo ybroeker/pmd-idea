@@ -12,7 +12,6 @@ import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 
-import com.github.ybroeker.pmdidea.Level;
 import com.github.ybroeker.pmdidea.LevelFilterModel;
 import com.github.ybroeker.pmdidea.toolwindow.tree.*;
 import com.intellij.openapi.fileEditor.FileEditorManager;
@@ -129,6 +128,8 @@ public class ScanResultsPanel extends JPanel {
             final FileNode fileNode = new FileNode(stringListEntry.getKey(), collect1);
             fileNodes.add(fileNode);
         }
+
+        fileNodes.sort(Comparator.comparing(FileNode::getFileName));
 
         this.currentTreeModel = new FilterableTreeModel(fileNodes, violationsNode -> violationsNode.hasAnyLevel(levelFilterModel.getSelected()));
 
