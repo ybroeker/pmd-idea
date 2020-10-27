@@ -1,19 +1,55 @@
-<idea-plugin>
-    <id>com.github.ybroeker.pmdidea</id>
-    <name>pmd-idea</name>
-    <vendor>ybroeker</vendor>
+<idea-plugin url="https://github.com/ybroeker/pmd-idea">
+    <id>PMD-IDEA</id>
+    <name>PMD-IDEA</name>
+    <vendor>Yannick Bröker</vendor>
 
     <!-- Product and plugin compatibility requirements -->
     <!-- https://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html -->
     <depends>com.intellij.modules.platform</depends>
 
     <extensions defaultExtensionNs="com.intellij">
-        <applicationService serviceImplementation="com.github.ybroeker.pmdidea.services.MyApplicationService"/>
-        <projectService serviceImplementation="com.github.ybroeker.pmdidea.services.MyProjectService"/>
+        <toolWindow icon="/com/github/ybroeker/pmdidea/pmdIdea.svg" id="PMD-IDEA" anchor="bottom" factoryClass="com.github.ybroeker.pmdidea.toolwindow.PmdToolWindowFactory"/>
     </extensions>
 
-    <applicationListeners>
-        <listener class="com.github.ybroeker.pmdidea.listeners.MyProjectManagerListener"
-                  topic="com.intellij.openapi.project.ProjectManagerListener"/>
-    </applicationListeners>
+    <actions>
+        <group id="PmdPluginActions" text="PMD" popup="true">
+            <action id="PmdScanProjectAction"
+                    class="com.github.ybroeker.pmdidea.actions.scan.ScanProjectAction"
+                    text="Scan Project"
+                    description="Run PMD on all files in the current project"
+                    icon="/general/projectTab.png">
+            </action>
+            <action id="PmdScanCurrentFileAction"
+                    class="com.github.ybroeker.pmdidea.actions.scan.ScanCurrentFileAction"
+                    text="Scan Current File"
+                    description="Run PMD on the current file"
+                    icon="/actions/execute.png">
+            </action>
+        </group>
+
+        <group id="PmdResultActions" text="Filter" popup="true">
+
+            <action id="PmdDisplayErrorsAction"
+                    class="com.github.ybroeker.pmdidea.actions.DisplayErrorsToggle"
+                    text="Display Errors"
+                    description="Display error results"
+                    icon="/compiler/error.png"/>
+
+            <action id="PmdDisplayWarningsAction"
+                    class="com.github.ybroeker.pmdidea.actions.DisplayWarningsToggle"
+                    text="Display Warnings"
+                    description="Display warning results"
+                    icon="/compiler/warning.png"/>
+
+            <action id="PmdDisplayInfoAction"
+                    class="com.github.ybroeker.pmdidea.actions.DisplayInfoToggle"
+                    text="Display Information Results"
+                    description="Display information results"
+                    icon="/compiler/information.png"/>
+        </group>
+
+    </actions>
+
+
+
 </idea-plugin>
