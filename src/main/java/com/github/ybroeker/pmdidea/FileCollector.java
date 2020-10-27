@@ -7,6 +7,7 @@ import com.intellij.openapi.components.Service;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.fileEditor.FileDocumentManager;
 import com.intellij.openapi.fileEditor.FileEditorManager;
+import com.intellij.openapi.fileTypes.StdFileTypes;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.roots.ProjectFileIndex;
 import com.intellij.openapi.roots.ProjectRootManager;
@@ -96,7 +97,7 @@ public final class FileCollector {
     }
 
     private boolean isScanableFileType(final VirtualFile virtualFile) {
-        return virtualFile.getName().endsWith(".java");
+        return StdFileTypes.JAVA.equals(virtualFile.getFileType());
     }
 
 }
