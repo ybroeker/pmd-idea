@@ -40,6 +40,10 @@ public final class FileCollector {
                         return false;
                     }
 
+                    if (isExcluded(file)) {
+                        return false;
+                    }
+
                     if (isScanableFile(file)) {
                         files.add(new File(file.getPresentableUrl()));
                     }
@@ -88,12 +92,22 @@ public final class FileCollector {
         return sourceTypes;
     }
 
-    private boolean isScanableFile(final VirtualFile virtualFile) {
+    /**
+     * Checks if a file or it's parent is excluded.
+     *
+     * Check for parent is necessary to exclude generated sources in excluded folders like {@code target/generated-sources}
+     *
+     * @param file the file to check
+     * @return if the file is excluded
+     */
+    private boolean isExcluded(final VirtualFile file) {
         final ProjectFileIndex fileIndex = ProjectRootManager.getInstance(project).getFileIndex();
 
-        return !virtualFile.isDirectory()
-               && fileIndex.isInSourceContent(virtualFile)
-               && isScanableFileType(virtualFile);
+        return fileIndex.isExcluded(file) || fileIndex.isExcluded(file.getParent());
+    }
+
+    private boolean isScanableFile(final VirtualFile virtualFile) {
+        return !virtualFile.isDirectory() && isScanableFileType(virtualFile);
     }
 
     private boolean isScanableFileType(final VirtualFile virtualFile) {
