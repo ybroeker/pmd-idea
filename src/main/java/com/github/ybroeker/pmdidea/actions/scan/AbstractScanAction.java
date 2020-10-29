@@ -4,8 +4,7 @@ import java.io.File;
 import java.nio.file.*;
 import java.util.List;
 
-import com.github.ybroeker.pmdidea.pmd.PmdRunListener;
-import com.github.ybroeker.pmdidea.pmd.PmdRunner;
+import com.github.ybroeker.pmdidea.pmd.*;
 import com.github.ybroeker.pmdidea.toolwindow.PmdToolPanel;
 import com.github.ybroeker.pmdidea.toolwindow.PmdToolWindowFactory;
 import com.intellij.openapi.actionSystem.*;
@@ -41,12 +40,16 @@ public abstract class AbstractScanAction extends AnAction {
         final PmdRunListener pmdRunListener = new PmdRunListenerAdapter(scan);
 
         //TODO: Select correct rule-set
+        //TODO: Select jdk-version
+        //TODO: Select PMD-Version
 
+        PmdAdapter pmdAdapter = project.getService(PmdAdapterDelegate.class);
 
-        final PmdRunner pmdRunner = new PmdRunner(project, files, path.toFile().getAbsolutePath(), pmdRunListener);
+        PmdConfiguration configuration = new PmdConfiguration(project, files, path.toFile().getAbsolutePath(), new PmdOptions("1.8", "6.29.0"), pmdRunListener);
+
         ApplicationManager.getApplication().saveAll();
         ApplicationManager.getApplication().runReadAction(() -> {
-            ApplicationManager.getApplication().executeOnPooledThread(pmdRunner);
+            ApplicationManager.getApplication().executeOnPooledThread(() -> pmdAdapter.runPmd(configuration));
         });
     }
 

@@ -3,6 +3,7 @@ package com.github.ybroeker.pmdidea.toolwindow.tree;
 import java.util.*;
 
 import com.github.ybroeker.pmdidea.Level;
+import com.github.ybroeker.pmdidea.pmd.PmdRulePriority;
 import net.sourceforge.pmd.RulePriority;
 
 public interface ViolationsNode {
@@ -10,7 +11,7 @@ public interface ViolationsNode {
     int getViolationsCount();
 
     default boolean hasAnyLevel(final Set<Level> levels) {
-        for (final RulePriority rulePriority : getRulePriorities()) {
+        for (final PmdRulePriority rulePriority : getRulePriorities()) {
             for (final Level level : levels) {
                 if (level.matches(rulePriority)) {
                     return true;
@@ -20,7 +21,7 @@ public interface ViolationsNode {
         return false;
     }
 
-    Set<RulePriority> getRulePriorities();
+    Set<PmdRulePriority> getRulePriorities();
 
     default List<? extends ViolationsNode> getChildren() {
         return Collections.emptyList();

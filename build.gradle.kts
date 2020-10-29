@@ -1,5 +1,6 @@
 import org.jetbrains.changelog.closure
 import org.jetbrains.changelog.markdownToHTML
+import com.github.ybroeker.pmdidea.build.*;
 
 plugins {
     id("java")
@@ -27,13 +28,27 @@ val platformDownloadSources: String by project
 group = pluginGroup
 version = pluginVersion
 
+sourceSets {
+    val main by getting
+    val pmdwrapper by creating {
+        java {
+            srcDir("src/pmdwrapper/java")
+            compileClasspath += main.output
+            runtimeClasspath += main.output
+        }
+    }
+}
+
+configurations["pmdwrapperCompile"].extendsFrom(configurations["compile"])
+configurations["pmdwrapperCompileOnly"].extendsFrom(configurations["compileOnly"])
+configurations["pmdwrapperCompileClasspath"].extendsFrom(configurations["compileClasspath"])
+configurations["pmdwrapperRuntime"].extendsFrom(configurations["runtime"])
+
+
 // Configure project's dependencies
 repositories {
     mavenCentral()
     jcenter()
-}
-dependencies {
-    compile("net.sourceforge.pmd:pmd-java:6.27.0")
 }
 
 // Configure gradle-intellij-plugin plugin.
@@ -93,4 +108,32 @@ tasks {
         // https://jetbrains.org/intellij/sdk/docs/tutorials/build_system/deployment.html#specifying-a-release-channel
         channels(pluginVersion.split('-').getOrElse(1) { "default" }.split('.').first())
     }
+}
+
+
+tasks.register<ResolvePmdArtifactsTask>(ResolvePmdArtifactsTask.NAME)
+tasks.register<CopyPMDToSandboxTask>(CopyPMDToSandboxTask.NAME)
+tasks.register<CopyPMDToSandboxTask>(CopyPMDToSandboxTask.TEST_NAME) { setTest() }
+tasks.register<CopyClassesToSandboxTask>(CopyClassesToSandboxTask.NAME)
+tasks.register<CopyClassesToSandboxTask>(CopyClassesToSandboxTask.TEST_NAME) { setTest() }
+
+tasks["compileTestJava"].dependsOn("compilePmdwrapperJava")
+tasks["testClasses"].dependsOn("pmdwrapperClasses")
+tasks["jar"].dependsOn("pmdwrapperClasses")
+
+tasks["buildPlugin"].dependsOn(CopyPMDToSandboxTask.NAME)
+tasks["buildPlugin"].dependsOn(CopyClassesToSandboxTask.NAME)
+tasks["runIde"].dependsOn(CopyPMDToSandboxTask.NAME)
+tasks["runIde"].dependsOn(CopyClassesToSandboxTask.NAME)
+
+tasks[CopyPMDToSandboxTask.NAME].dependsOn("prepareSandbox")
+tasks[CopyClassesToSandboxTask.NAME].dependsOn("prepareSandbox")
+
+tasks[CopyPMDToSandboxTask.TEST_NAME].dependsOn("prepareTestingSandbox")
+tasks[CopyClassesToSandboxTask.TEST_NAME].dependsOn("prepareTestingSandbox")
+
+dependencies {
+    compileOnly("net.sourceforge.pmd:pmd-java:6.27.0")
+    val pmdwrapperCompile by configurations
+    pmdwrapperCompile("net.sourceforge.pmd:pmd-java:6.27.0");
 }

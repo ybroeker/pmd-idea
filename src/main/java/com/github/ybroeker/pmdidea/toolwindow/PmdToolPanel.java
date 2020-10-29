@@ -5,6 +5,7 @@ import java.awt.*;
 import javax.swing.*;
 import java.util.List;
 
+import com.github.ybroeker.pmdidea.pmd.PmdRuleViolation;
 import com.intellij.openapi.actionSystem.*;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.wm.ToolWindowFactory;
@@ -43,7 +44,7 @@ public class PmdToolPanel extends JPanel {
         return scanResultsPanel.getScanProgressPanel();
     }
 
-    public void displayViolations(final List<RuleViolation> violations) {
+    public void displayViolations(final List<PmdRuleViolation> violations) {
         scanResultsPanel.displayViolations(violations);
     }
 }

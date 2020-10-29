@@ -13,6 +13,6 @@ public interface PmdRunListener {
 
     void finished();
 
-    void addViolation(RuleViolation ruleViolation);
+    void addViolation(PmdRuleViolation ruleViolation);
 
 }

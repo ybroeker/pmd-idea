@@ -2,10 +2,10 @@ package com.github.ybroeker.pmdidea.actions.scan;
 
 import java.util.*;
 
+import com.github.ybroeker.pmdidea.pmd.PmdRuleViolation;
 import com.github.ybroeker.pmdidea.toolwindow.PmdToolPanel;
 import com.github.ybroeker.pmdidea.toolwindow.ScanProgressModel;
 import com.github.ybroeker.pmdidea.pmd.PmdRunListener;
-import net.sourceforge.pmd.RuleViolation;
 
 public class PmdRunListenerAdapter implements PmdRunListener {
 
@@ -13,7 +13,7 @@ public class PmdRunListenerAdapter implements PmdRunListener {
 
     private final ScanProgressModel scanProgressModel;
 
-    private final List<RuleViolation> ruleViolations = Collections.synchronizedList(new ArrayList<>());
+    private final List<PmdRuleViolation> ruleViolations = Collections.synchronizedList(new ArrayList<>());
 
     public PmdRunListenerAdapter(final PmdToolPanel scan) {
         this.scan = scan;
@@ -37,7 +37,7 @@ public class PmdRunListenerAdapter implements PmdRunListener {
     }
 
     @Override
-    public void addViolation(final RuleViolation ruleViolation) {
+    public void addViolation(final PmdRuleViolation ruleViolation) {
         ruleViolations.add(ruleViolation);
         scanProgressModel.incrementViolationsFound(1);
     }

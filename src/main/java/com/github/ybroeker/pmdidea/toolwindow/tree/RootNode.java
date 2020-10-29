@@ -4,13 +4,14 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import com.github.ybroeker.pmdidea.pmd.PmdRulePriority;
 import net.sourceforge.pmd.RulePriority;
 
 class RootNode implements ViolationsNode {
 
     private final int violationsCount;
     private final List<FileNode> fileViolations;
-    private final Set<RulePriority> rulePriorities;
+    private final Set<PmdRulePriority> rulePriorities;
 
     public RootNode(final List<FileNode> fileViolations) {
         this.fileViolations = fileViolations;
@@ -27,7 +28,7 @@ class RootNode implements ViolationsNode {
     }
 
     @Override
-    public Set<RulePriority> getRulePriorities() {
+    public Set<PmdRulePriority> getRulePriorities() {
         return rulePriorities;
     }
 

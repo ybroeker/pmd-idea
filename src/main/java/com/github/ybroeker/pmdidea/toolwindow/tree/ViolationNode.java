@@ -2,19 +2,21 @@ package com.github.ybroeker.pmdidea.toolwindow.tree;
 
 import java.util.*;
 
+import com.github.ybroeker.pmdidea.pmd.PmdRulePriority;
+import com.github.ybroeker.pmdidea.pmd.PmdRuleViolation;
 import net.sourceforge.pmd.RulePriority;
 import net.sourceforge.pmd.RuleViolation;
 
 
 public class ViolationNode implements ViolationsNode {
 
-    private final RuleViolation violation;
+    private final PmdRuleViolation violation;
 
-    public ViolationNode(final RuleViolation violation) {
+    public ViolationNode(final PmdRuleViolation violation) {
         this.violation = violation;
     }
 
-    public RuleViolation getViolation() {
+    public PmdRuleViolation getViolation() {
         return violation;
     }
 
@@ -24,8 +26,8 @@ public class ViolationNode implements ViolationsNode {
     }
 
     @Override
-    public Set<RulePriority> getRulePriorities() {
-        return Collections.singleton(violation.getRule().getPriority());
+    public Set<PmdRulePriority> getRulePriorities() {
+        return Collections.singleton(violation.getPmdRule().getPmdRulePriority());
     }
 
     @Override

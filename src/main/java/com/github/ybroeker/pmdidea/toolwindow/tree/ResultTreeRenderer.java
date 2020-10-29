@@ -6,6 +6,8 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.github.ybroeker.pmdidea.pmd.PmdRulePriority;
+import com.github.ybroeker.pmdidea.pmd.PmdRuleViolation;
 import com.intellij.icons.AllIcons;
 import com.intellij.openapi.project.Project;
 import com.intellij.ui.ColoredTreeCellRenderer;
@@ -19,7 +21,7 @@ public class ResultTreeRenderer extends ColoredTreeCellRenderer {
 
     private static final long serialVersionUID = 1L;
 
-    private static final Map<RulePriority, Icon> ICONS = createIcons();
+    private static final Map<PmdRulePriority, Icon> ICONS = createIcons();
 
     private final Project project;
 
@@ -62,30 +64,30 @@ public class ResultTreeRenderer extends ColoredTreeCellRenderer {
 
         if (userObject instanceof ViolationNode) {
             final ViolationNode violationNode = (ViolationNode) userObject;
-            final RuleViolation violation = violationNode.getViolation();
+            final PmdRuleViolation violation = violationNode.getViolation();
 
-            this.setIcon(ICONS.get(violation.getRule().getPriority()));
+            this.setIcon(ICONS.get(violation.getPmdRule().getPmdRulePriority()));
 
-            this.append(violation.getDescription(),
+            this.append(violation.getMessage(),
                     SimpleTextAttributes.REGULAR_ATTRIBUTES);
-            this.append(" (" + violation.getBeginLine() + ":" + violation.getBeginColumn() + ")",
+            this.append(" (" + violation.getPosition().getBeginLine() + ":" + violation.getPosition().getBeginColumn() + ")",
                     SimpleTextAttributes.REGULAR_ATTRIBUTES);
-            this.append(" [" + violation.getRule().getName() + "]",
+            this.append(" [" + violation.getPmdRule().getName() + "]",
                     SimpleTextAttributes.GRAYED_ATTRIBUTES);
 
-            this.setToolTipText(violation.getRule().getDescription());
+            this.setToolTipText(violation.getPmdRule().getDescription());
 
             return;
         }
     }
 
-    private static Map<RulePriority, Icon> createIcons() {
-        final Map<RulePriority, Icon> icons = new HashMap<>();
-        icons.put(RulePriority.HIGH, AllIcons.General.Error);
-        icons.put(RulePriority.MEDIUM_HIGH, AllIcons.General.Warning);
-        icons.put(RulePriority.MEDIUM, AllIcons.General.Warning);
-        icons.put(RulePriority.MEDIUM_LOW, AllIcons.General.Information);
-        icons.put(RulePriority.LOW, AllIcons.General.Information);
+    private static Map<PmdRulePriority, Icon> createIcons() {
+        final Map<PmdRulePriority, Icon> icons = new HashMap<>();
+        icons.put(PmdRulePriority.HIGH, AllIcons.General.Error);
+        icons.put(PmdRulePriority.MEDIUM_HIGH, AllIcons.General.Warning);
+        icons.put(PmdRulePriority.MEDIUM, AllIcons.General.Warning);
+        icons.put(PmdRulePriority.MEDIUM_LOW, AllIcons.General.Information);
+        icons.put(PmdRulePriority.LOW, AllIcons.General.Information);
         return icons;
     }
 

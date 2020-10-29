@@ -3,6 +3,7 @@ package com.github.ybroeker.pmdidea.toolwindow;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.File;
 import java.util.*;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -13,6 +14,7 @@ import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 
 import com.github.ybroeker.pmdidea.LevelFilterModel;
+import com.github.ybroeker.pmdidea.pmd.PmdRuleViolation;
 import com.github.ybroeker.pmdidea.toolwindow.tree.*;
 import com.intellij.openapi.fileEditor.FileEditorManager;
 import com.intellij.openapi.fileEditor.OpenFileDescriptor;
@@ -100,7 +102,7 @@ public class ScanResultsPanel extends JPanel {
     }
 
     private void showInEditor(final ViolationNode violation) {
-        final VirtualFile virtualFile = LocalFileSystem.getInstance().findFileByPath(violation.getViolation().getFilename());
+        final VirtualFile virtualFile = LocalFileSystem.getInstance().findFileByPath(violation.getViolation().getFile().getPath());
         if (virtualFile == null) {
             return;
         }
@@ -109,8 +111,8 @@ public class ScanResultsPanel extends JPanel {
         fileEditorManager.navigateToTextEditor(new OpenFileDescriptor(
                         project,
                         virtualFile,
-                        Math.max(violation.getViolation().getBeginLine() - 1, 0),
-                        Math.max(violation.getViolation().getBeginColumn() - 1, 0)),
+                        Math.max(violation.getViolation().getPosition().getBeginLine() - 1, 0),
+                        Math.max(violation.getViolation().getPosition().getBeginColumn() - 1, 0)),
                 true);
     }
 
@@ -119,11 +121,11 @@ public class ScanResultsPanel extends JPanel {
         return scanProgressPanel;
     }
 
-    public void displayViolations(final List<RuleViolation> violations) {
-        final Map<String, List<RuleViolation>> collect = violations.stream().collect(Collectors.groupingBy(RuleViolation::getFilename));
+    public void displayViolations(final List<PmdRuleViolation> violations) {
+        final Map<File, List<PmdRuleViolation>> collect = violations.stream().collect(Collectors.groupingBy(PmdRuleViolation::getFile));
 
         final List<FileNode> fileNodes = new ArrayList<>();
-        for (final Map.Entry<String, List<RuleViolation>> stringListEntry : collect.entrySet()) {
+        for (final Map.Entry<File, List<PmdRuleViolation>> stringListEntry : collect.entrySet()) {
             final List<ViolationNode> collect1 = stringListEntry.getValue().stream().map(ViolationNode::new).collect(Collectors.toList());
             final FileNode fileNode = new FileNode(stringListEntry.getKey(), collect1);
             fileNodes.add(fileNode);

@@ -1,4 +1,4 @@
-package com.github.ybroeker.pmdidea.pmd;
+package com.github.ybroeker.pmdidea.pmdwrapper;
 
 import java.io.IOException;
 import java.io.Writer;
