@@ -4,6 +4,7 @@ import java.io.File;
 import java.nio.file.*;
 import java.util.List;
 
+import com.github.ybroeker.pmdidea.config.PmdConfigurationService;
 import com.github.ybroeker.pmdidea.pmd.*;
 import com.github.ybroeker.pmdidea.toolwindow.PmdToolPanel;
 import com.github.ybroeker.pmdidea.toolwindow.PmdToolWindowFactory;
@@ -26,26 +27,25 @@ public abstract class AbstractScanAction extends AnAction {
             return;
         }
 
-        final Path path = Paths.get(project.getBasePath(), "pmd-rules.xml");
-        if (!Files.exists(path)) {
+        final PmdConfigurationService service = project.getService(PmdConfigurationService.class);
+
+        final Path rulesPath = Paths.get(service.getState().getRulesPath());
+        if (!Files.exists(rulesPath)) {
             return;
         }
 
         final ToolWindow toolWindow = ToolWindowManager.getInstance(project).getToolWindow(PmdToolWindowFactory.TOOL_WINDOW_ID);
 
-        final PmdToolPanel scan = (PmdToolPanel) toolWindow.getContentManager().getContent(0).getComponent();
+        final PmdToolPanel toolPanel = (PmdToolPanel) toolWindow.getContentManager().getContent(0).getComponent();
 
         final List<File> files = getFiles(project);
 
-        final PmdRunListener pmdRunListener = new PmdRunListenerAdapter(scan);
-
-        //TODO: Select correct rule-set
-        //TODO: Select jdk-version
-        //TODO: Select PMD-Version
+        final PmdRunListener pmdRunListener = new PmdRunListenerAdapter(toolPanel);
 
         PmdAdapter pmdAdapter = project.getService(PmdAdapterDelegate.class);
 
-        PmdConfiguration configuration = new PmdConfiguration(project, files, path.toFile().getAbsolutePath(), new PmdOptions("1.8", "6.29.0"), pmdRunListener);
+        final PmdOptions pmdOptions = new PmdOptions(service.getState().getJdkVersion().toString(), service.getState().getPmdVersion().toString());
+        PmdConfiguration configuration = new PmdConfiguration(project, files, rulesPath.toFile().getAbsolutePath(), pmdOptions, pmdRunListener);
 
         ApplicationManager.getApplication().saveAll();
         ApplicationManager.getApplication().runReadAction(() -> {

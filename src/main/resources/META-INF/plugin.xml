@@ -1,6 +1,8 @@
 <idea-plugin url="https://github.com/ybroeker/pmd-idea">
     <id>PMD-IDEA</id>
     <name>PMD-IDEA</name>
+    <resource-bundle>com.github.ybroeker.pmdidea.PmdBundle</resource-bundle>
+
     <vendor>Yannick Bröker</vendor>
 
     <!-- Product and plugin compatibility requirements -->
@@ -9,6 +11,9 @@
 
     <extensions defaultExtensionNs="com.intellij">
         <toolWindow icon="/com/github/ybroeker/pmdidea/pmdIdea.svg" id="PMD-IDEA" anchor="bottom" factoryClass="com.github.ybroeker.pmdidea.toolwindow.PmdToolWindowFactory"/>
+
+        <projectConfigurable instance="com.github.ybroeker.pmdidea.config.PmdConfigurable" parentId="tools"/>
+        <projectService serviceImplementation="com.github.ybroeker.pmdidea.config.PmdConfigurationService"/>
     </extensions>
 
     <actions>

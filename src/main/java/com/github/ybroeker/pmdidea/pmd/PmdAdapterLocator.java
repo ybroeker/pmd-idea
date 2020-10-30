@@ -19,6 +19,25 @@ public class PmdAdapterLocator {
     private static final Pattern LIB_URL = Pattern.compile("^(.*?)[/\\\\]lib[/\\\\]?.*\\.jar$");
 
 
+    public static List<PmdVersion> getAvailableVersions() {
+        final Properties properties = loadProperties();
+
+        List<PmdVersion> result = new ArrayList<>();
+        for (final Object o : properties.keySet()) {
+            result.add(PmdVersion.of((String) o));
+        }
+        Collections.sort(result);
+
+        return result;
+    }
+
+    public static PmdVersion getLatestVersion() {
+        final List<PmdVersion> availableVersions = PmdAdapterLocator.getAvailableVersions();
+
+        final PmdVersion latestVersion = availableVersions.get(availableVersions.size() - 1);
+        return latestVersion;
+    }
+
     @NotNull
     public static PmdAdapter getInstance(String version) {
         final Properties result = loadProperties();
