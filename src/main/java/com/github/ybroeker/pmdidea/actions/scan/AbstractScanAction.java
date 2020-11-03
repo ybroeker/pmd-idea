@@ -3,6 +3,7 @@ package com.github.ybroeker.pmdidea.actions.scan;
 import java.io.File;
 import java.nio.file.*;
 import java.util.List;
+import java.util.Optional;
 
 import com.github.ybroeker.pmdidea.config.PmdConfigurationService;
 import com.github.ybroeker.pmdidea.pmd.*;
@@ -14,11 +15,40 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.wm.ToolWindow;
 import com.intellij.openapi.wm.ToolWindowManager;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 
 public abstract class AbstractScanAction extends AnAction {
 
     protected abstract List<File> getFiles(@NotNull final Project project);
+
+    @Override
+    public void update(@NotNull final AnActionEvent event) {
+        final Project project = event.getData(CommonDataKeys.PROJECT);
+        if (project == null) {
+            return;
+        }
+
+        final Optional<Path> rules = getRules(project);
+
+        final Presentation presentation = event.getPresentation();
+        if (rules.isPresent() != presentation.isEnabled()) {
+            presentation.setEnabled(rules.isPresent());
+        }
+    }
+
+    private Optional<Path> getRules(final Project project) {
+        final PmdConfigurationService service = project.getService(PmdConfigurationService.class);
+        final String pathName = service.getState().getRulesPath();
+        if (pathName == null || pathName.isEmpty()) {
+            return Optional.empty();
+        }
+        final Path rulesPath = Paths.get(pathName);
+        if (!Files.exists(rulesPath)) {
+            return Optional.empty();
+        }
+        return Optional.of(rulesPath);
+    }
 
     @Override
     public final void actionPerformed(final AnActionEvent event) {
@@ -29,8 +59,8 @@ public abstract class AbstractScanAction extends AnAction {
 
         final PmdConfigurationService service = project.getService(PmdConfigurationService.class);
 
-        final Path rulesPath = Paths.get(service.getState().getRulesPath());
-        if (!Files.exists(rulesPath)) {
+        final Optional<Path> rulesPath = getRules(project);
+        if (!rulesPath.isPresent()) {
             return;
         }
 
@@ -45,7 +75,7 @@ public abstract class AbstractScanAction extends AnAction {
         PmdAdapter pmdAdapter = project.getService(PmdAdapterDelegate.class);
 
         final PmdOptions pmdOptions = new PmdOptions(service.getState().getJdkVersion().toString(), service.getState().getPmdVersion().toString());
-        PmdConfiguration configuration = new PmdConfiguration(project, files, rulesPath.toFile().getAbsolutePath(), pmdOptions, pmdRunListener);
+        PmdConfiguration configuration = new PmdConfiguration(project, files, rulesPath.get().toFile().getAbsolutePath(), pmdOptions, pmdRunListener);
 
         ApplicationManager.getApplication().saveAll();
         ApplicationManager.getApplication().runReadAction(() -> {
