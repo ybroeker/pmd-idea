@@ -41,7 +41,7 @@ public class PmdRenderer extends AbstractIncrementingRenderer {
 
     @Override
     public void renderFileViolations(final Iterator<RuleViolation> violations) {
-        for (final RuleViolation ruleViolation : new IteratorIterable<>(violations)) {
+        for (final RuleViolation ruleViolation : ((Iterable<RuleViolation>) () -> violations)) {
             PmdRule rule = map(ruleViolation.getRule());
             PmdRuleViolation violation = new PmdRuleViolation(rule,
                     new File(ruleViolation.getFilename()),
@@ -76,21 +76,6 @@ public class PmdRenderer extends AbstractIncrementingRenderer {
                 return PmdRulePriority.HIGH;
             default:
                 throw new AssertionError("Got unknown priority " + priority);
-        }
-    }
-
-    private static class IteratorIterable<T> implements Iterable<T> {
-
-        private final Iterator<T> wrappedIterator;
-
-        public IteratorIterable(final Iterator<T> wrappedIterator) {
-            this.wrappedIterator = wrappedIterator;
-        }
-
-        @NotNull
-        @Override
-        public Iterator<T> iterator() {
-            return wrappedIterator;
         }
     }
 
