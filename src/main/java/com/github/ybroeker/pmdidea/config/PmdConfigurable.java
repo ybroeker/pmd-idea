@@ -13,7 +13,7 @@ public class PmdConfigurable implements Configurable {
 
     private final Project project;
 
-    private PmdConfigurationModel stateModel;
+    private PmdConfigurationPanel pmdConfigurationPanel;
 
     public PmdConfigurable(final Project project) {
         this.project = project;
@@ -26,29 +26,23 @@ public class PmdConfigurable implements Configurable {
 
     @Override
     public @Nullable JComponent createComponent() {
-        final PmdConfigurationService service = project.getService(PmdConfigurationService.class);
-        this.stateModel = new PmdConfigurationModel(service.getState());
-        return new PmdConfigurationPanel(stateModel);
+        this.pmdConfigurationPanel = new PmdConfigurationPanel(project);
+        return pmdConfigurationPanel;
     }
 
     @Override
     public boolean isModified() {
-        return stateModel.isModified();
+        return pmdConfigurationPanel.isModified();
     }
 
     @Override
     public void apply() {
-        final PmdConfigurationService service = project.getService(PmdConfigurationService.class);
-        service.setState(stateModel.build());
+        pmdConfigurationPanel.apply();
     }
 
     @Override
     public void reset() {
-        stateModel.reset();
+        pmdConfigurationPanel.reset();
     }
 
-    @Override
-    public void disposeUIResources() {
-        this.stateModel = null;
-    }
 }

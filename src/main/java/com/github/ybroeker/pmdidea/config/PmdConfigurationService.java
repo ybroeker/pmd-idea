@@ -41,7 +41,6 @@ public class PmdConfigurationService implements PersistentStateComponent<PmdConf
         final JavaVersion javaVersion = JavaVersions.getProjectVersionOrDefault(project);
 
         this.state = new State();
-        this.state.rulesPath = "/Users/yannick-broeker/projekte/pmd-idea/pmd-rules.xml";
         this.state.pmdVersion = latestVersion;
         this.state.jdkVersion = javaVersion;
     }
