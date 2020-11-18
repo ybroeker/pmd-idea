@@ -9,6 +9,8 @@
 <!-- Plugin description -->
 This Plugin provides PMD-Support inside of IntelliJ.
 
+PMD-Versions 6.0.1 up to 6.29 are supported and bundled.
+
 <!-- Plugin description end -->
 
 ## Installation
