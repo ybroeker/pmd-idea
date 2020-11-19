@@ -1,8 +1,13 @@
 # pmd-idea
 
+
 ![Build](https://github.com/ybroeker/pmd-idea/workflows/Build/badge.svg)
-[![Version](https://img.shields.io/jetbrains/plugin/v/PLUGIN_ID.svg)](https://plugins.jetbrains.com/plugin/PLUGIN_ID)
-[![Downloads](https://img.shields.io/jetbrains/plugin/d/PLUGIN_ID.svg)](https://plugins.jetbrains.com/plugin/PLUGIN_ID)
+[![Version](https://img.shields.io/jetbrains/plugin/v/15412-pmd-idea.svg)](https://plugins.jetbrains.com/plugin/15412-pmd-idea)
+[![Downloads](https://img.shields.io/jetbrains/plugin/d/15412-pmd-idea.svg)](https://plugins.jetbrains.com/plugin/15412-pmd-idea)
+
+
+[![Total alerts](https://img.shields.io/lgtm/alerts/g/ybroeker/pmd-idea.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/ybroeker/pmd-idea/alerts/)
+[![Language grade: Java](https://img.shields.io/lgtm/grade/java/g/ybroeker/pmd-idea.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/ybroeker/pmd-idea/context:java)
 
 ## Use
 
