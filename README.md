@@ -7,7 +7,10 @@
 ## Use
 
 <!-- Plugin description -->
-This Plugin provides PMD-Support inside of IntelliJ.
+This Plugin provides PMD-Support inside of IntelliJ and allows to scan your code.
+
+To scan your code, configure a pmd ruleset in the plugin settings and select the appropriate pmd version.
+Then open the toolbar window and scan your complete project or the currently opened file.
 
 PMD-Versions 6.0.1 up to 6.29 are supported and bundled.
 
