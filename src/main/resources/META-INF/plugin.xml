@@ -8,6 +8,7 @@
     <!-- Product and plugin compatibility requirements -->
     <!-- https://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html -->
     <depends>com.intellij.modules.platform</depends>
+    <depends>com.intellij.java</depends>
 
     <extensions defaultExtensionNs="com.intellij">
         <toolWindow icon="/com/github/ybroeker/pmdidea/pmdIdea.svg" id="PMD-IDEA" anchor="bottom" factoryClass="com.github.ybroeker.pmdidea.toolwindow.PmdToolWindowFactory"/>
