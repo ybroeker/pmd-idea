@@ -4,5 +4,8 @@
 
 ## [Unreleased]
 ### Added
+
+## [1.0.0]
+### Added
 - Basic functionality
 - Initial scaffold created from [IntelliJ Platform Plugin Template](https://github.com/JetBrains/intellij-platform-plugin-template)
