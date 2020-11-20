@@ -21,7 +21,7 @@ public class PmdConfigurable implements Configurable {
 
     @Override
     public @Nls(capitalization = Nls.Capitalization.Title) String getDisplayName() {
-        return PmdBundle.getMessage("plugin.configuration-name");
+        return PmdBundle.message("plugin.configuration-name");
     }
 
     @Override

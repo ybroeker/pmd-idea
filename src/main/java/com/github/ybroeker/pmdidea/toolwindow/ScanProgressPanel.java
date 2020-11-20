@@ -10,7 +10,7 @@ public class ScanProgressPanel extends Box {
 
     private JProgressBar jProgressBar = new JProgressBar();
 
-    private JLabel label = new JLabel(PmdBundle.getMessage("scan.finished", 0, 0));
+    private JLabel label = new JLabel(PmdBundle.message("scan.finished", 0, 0));
 
     private ScanProgressModel scanProgressModel = new ScanProgressModel(this);
 
@@ -28,12 +28,12 @@ public class ScanProgressPanel extends Box {
     public void update() {
         if (scanProgressModel.isFinished()) {
             jProgressBar.setVisible(false);
-            label.setText(PmdBundle.getMessage("scan.finished", scanProgressModel.getFilesScanned(), scanProgressModel.getViolationsDetected()));
+            label.setText(PmdBundle.message("scan.finished", scanProgressModel.getFilesScanned(), scanProgressModel.getViolationsDetected()));
         } else {
             jProgressBar.setVisible(true);
             jProgressBar.setValue(scanProgressModel.getFilesScanned());
             jProgressBar.setMaximum(scanProgressModel.getFilesToScan());
-            label.setText(PmdBundle.getMessage("scan.progress", scanProgressModel.getFilesScanned(), scanProgressModel.getFilesToScan(), scanProgressModel.getViolationsDetected()));
+            label.setText(PmdBundle.message("scan.progress", scanProgressModel.getFilesScanned(), scanProgressModel.getFilesToScan(), scanProgressModel.getViolationsDetected()));
         }
     }
 
