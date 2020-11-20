@@ -3,6 +3,7 @@ package com.github.ybroeker.pmdidea;
 import java.io.File;
 import java.util.*;
 
+import com.intellij.ide.highlighter.JavaFileType;
 import com.intellij.openapi.components.Service;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.fileEditor.FileDocumentManager;
@@ -111,7 +112,7 @@ public final class FileCollector {
     }
 
     private boolean isScanableFileType(final VirtualFile virtualFile) {
-        return StdFileTypes.JAVA.equals(virtualFile.getFileType());
+        return JavaFileType.INSTANCE.equals(virtualFile.getFileType());
     }
 
 }

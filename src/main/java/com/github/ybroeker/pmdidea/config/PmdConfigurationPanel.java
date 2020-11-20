@@ -7,6 +7,7 @@ import javax.swing.*;
 
 import com.github.ybroeker.pmdidea.pmd.PmdAdapterLocator;
 import com.github.ybroeker.pmdidea.pmd.PmdVersion;
+import com.intellij.ide.highlighter.XmlFileType;
 import com.intellij.openapi.fileChooser.FileChooserDescriptor;
 import com.intellij.openapi.fileChooser.FileChooserDescriptorFactory;
 import com.intellij.openapi.fileTypes.StdFileTypes;
@@ -90,7 +91,7 @@ public class PmdConfigurationPanel extends JPanel {
         JTextField textField = rulesFile.getTextField();
         textField.setText(stateBuilder.getRulesPath());
 
-        FileChooserDescriptor fileChooserDescriptor = FileChooserDescriptorFactory.createSingleFileDescriptor(StdFileTypes.XML);
+        FileChooserDescriptor fileChooserDescriptor = FileChooserDescriptorFactory.createSingleFileDescriptor(XmlFileType.INSTANCE);
         rulesFile.addBrowseFolderListener("PMD-Rules", "Select the PMD rules file", project, fileChooserDescriptor);
 
         rulesFile.setMaximumSize(new Dimension(rulesFile.getMaximumSize().width, rulesFile.getPreferredSize().height));
