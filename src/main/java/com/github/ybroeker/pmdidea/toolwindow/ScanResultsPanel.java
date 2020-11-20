@@ -108,7 +108,7 @@ public class ScanResultsPanel extends JPanel {
         }
 
         final FileEditorManager fileEditorManager = FileEditorManager.getInstance(project);
-        fileEditorManager.navigateToTextEditor(new OpenFileDescriptor(
+        fileEditorManager.openTextEditor(new OpenFileDescriptor(
                         project,
                         virtualFile,
                         Math.max(violation.getViolation().getPosition().getBeginLine() - 1, 0),
