@@ -6,7 +6,7 @@ plugins {
     id("java")
     id("idea")
     // gradle-intellij-plugin - read more: https://github.com/JetBrains/gradle-intellij-plugin
-    id("org.jetbrains.intellij") version "0.5.0"
+    id("org.jetbrains.intellij") version "0.6.3"
     // gradle-changelog-plugin - read more: https://github.com/JetBrains/gradle-changelog-plugin
     id("org.jetbrains.changelog") version "0.6.2"
 }
@@ -19,6 +19,7 @@ val pluginName_: String by project
 val pluginVersion: String by project
 val pluginSinceBuild: String by project
 val pluginUntilBuild: String by project
+val pluginVerifierIdeVersions: String by project
 
 val platformType: String by project
 val platformVersion: String by project
@@ -98,6 +99,10 @@ tasks {
                 changelog.getLatest().toHTML()
             }
         )
+    }
+
+    runPluginVerifier {
+        ideVersions(pluginVerifierIdeVersions)
     }
 
     publishPlugin {
