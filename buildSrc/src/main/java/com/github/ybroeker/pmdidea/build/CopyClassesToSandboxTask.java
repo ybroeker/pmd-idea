@@ -38,7 +38,7 @@ public class CopyClassesToSandboxTask extends Copy {
         String sandbox = (test ? TEST_SANDBOX_PATH : SANDBOX_PATH);
 
         setDescription("Copy classes from '" + WRAPPER_SOURCESET_NAME + "' sourceset into " + sandbox);
-        into(new File(getProject().getBuildDir(),  sandbox + "/PMD-IDEA/" + TARGET_SUBFOLDER));
+        into(new File(getProject().getBuildDir(),  sandbox + "/pmd-idea/" + TARGET_SUBFOLDER));
     }
 
 
