@@ -5,6 +5,9 @@
 ## [Unreleased]
 ### Added
 
+### Changed
+- Hide PMD log messages
+
 ## [1.0.0]
 ### Added
 - Basic functionality

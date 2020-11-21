@@ -13,6 +13,8 @@
     <extensions defaultExtensionNs="com.intellij">
         <toolWindow icon="/com/github/ybroeker/pmdidea/pmdIdea.svg" id="PMD-IDEA" anchor="bottom" factoryClass="com.github.ybroeker.pmdidea.toolwindow.PmdToolWindowFactory"/>
 
+        <postStartupActivity  implementation="com.github.ybroeker.pmdidea.logging.PmdLoggingConfigurator"/>
+
         <projectConfigurable instance="com.github.ybroeker.pmdidea.config.PmdConfigurable" parentId="tools"/>
         <projectService serviceImplementation="com.github.ybroeker.pmdidea.config.PmdConfigurationService"/>
     </extensions>
