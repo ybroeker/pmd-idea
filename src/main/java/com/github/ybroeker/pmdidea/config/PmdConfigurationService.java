@@ -4,12 +4,9 @@ package com.github.ybroeker.pmdidea.config;
 import java.util.*;
 
 import com.github.ybroeker.pmdidea.PmdPlugin;
-import com.github.ybroeker.pmdidea.pmd.PmdAdapterLocator;
-import com.github.ybroeker.pmdidea.pmd.PmdVersion;
+import com.github.ybroeker.pmdidea.pmd.*;
 import com.intellij.openapi.components.*;
 import com.intellij.openapi.project.Project;
-import com.intellij.openapi.projectRoots.Sdk;
-import com.intellij.openapi.roots.ProjectRootManager;
 import com.intellij.util.lang.JavaVersion;
 import com.intellij.util.xmlb.annotations.OptionTag;
 import org.jetbrains.annotations.NotNull;
@@ -37,7 +34,7 @@ public class PmdConfigurationService implements PersistentStateComponent<PmdConf
 
     @Override
     public void noStateLoaded() {
-        final PmdVersion latestVersion = PmdAdapterLocator.getLatestVersion();
+        final PmdVersion latestVersion = PmdVersions.getLatestVersion();
         final JavaVersion javaVersion = JavaVersions.getProjectVersionOrDefault(project);
 
         this.state = new State();

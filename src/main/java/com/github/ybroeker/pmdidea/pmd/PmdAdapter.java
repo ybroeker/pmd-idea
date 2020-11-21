@@ -3,7 +3,7 @@ package com.github.ybroeker.pmdidea.pmd;
 
 public interface PmdAdapter {
 
-    String getPmdVersion();
+    PmdVersion getPmdVersion();
 
     void runPmd(PmdConfiguration pmdConfiguration);
 

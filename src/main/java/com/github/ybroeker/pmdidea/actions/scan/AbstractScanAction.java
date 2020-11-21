@@ -74,7 +74,7 @@ public abstract class AbstractScanAction extends AnAction {
 
         PmdAdapter pmdAdapter = project.getService(PmdAdapterDelegate.class);
 
-        final PmdOptions pmdOptions = new PmdOptions(service.getState().getJdkVersion().toString(), service.getState().getPmdVersion().toString());
+        final PmdOptions pmdOptions = new PmdOptions(service.getState().getJdkVersion().toString(), service.getState().getPmdVersion());
         PmdConfiguration configuration = new PmdConfiguration(project, files, rulesPath.get().toFile().getAbsolutePath(), pmdOptions, pmdRunListener);
 
         ApplicationManager.getApplication().saveAll();

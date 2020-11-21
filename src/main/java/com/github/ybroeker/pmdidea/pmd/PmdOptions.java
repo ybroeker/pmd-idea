@@ -5,9 +5,9 @@ public class PmdOptions {
 
     private final String targetJdk;
 
-    private final String pmdVersion;
+    private final PmdVersion pmdVersion;
 
-    public PmdOptions(final String targetJdk, final String pmdVersion) {
+    public PmdOptions(final String targetJdk, final PmdVersion pmdVersion) {
         this.targetJdk = targetJdk;
         this.pmdVersion = pmdVersion;
     }
@@ -16,7 +16,7 @@ public class PmdOptions {
         return targetJdk;
     }
 
-    public String getPmdVersion() {
+    public PmdVersion getPmdVersion() {
         return pmdVersion;
     }
 }

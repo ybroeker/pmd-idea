@@ -5,12 +5,10 @@ import java.util.List;
 
 import javax.swing.*;
 
-import com.github.ybroeker.pmdidea.pmd.PmdAdapterLocator;
-import com.github.ybroeker.pmdidea.pmd.PmdVersion;
+import com.github.ybroeker.pmdidea.pmd.*;
 import com.intellij.ide.highlighter.XmlFileType;
 import com.intellij.openapi.fileChooser.FileChooserDescriptor;
 import com.intellij.openapi.fileChooser.FileChooserDescriptorFactory;
-import com.intellij.openapi.fileTypes.StdFileTypes;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.*;
 import com.intellij.util.lang.JavaVersion;
@@ -72,8 +70,8 @@ public class PmdConfigurationPanel extends JPanel {
     private ComboBox<PmdVersion> buildVersionComboBox(final PmdConfigurationService.@NotNull State stateBuilder) {
         final Box horizontalBox = Box.createHorizontalBox();
         horizontalBox.setAlignmentX(Component.LEFT_ALIGNMENT);
-        ;
-        final List<PmdVersion> availableVersions = PmdAdapterLocator.getAvailableVersions();
+
+        final List<PmdVersion> availableVersions = PmdVersions.getVersions();
         ComboBox<PmdVersion> comboBox = new ComboBox<>(availableVersions.toArray(new PmdVersion[0]));
         comboBox.setSelectedItem(stateBuilder.getPmdVersion());
         comboBox.setMaximumSize(comboBox.getPreferredSize());

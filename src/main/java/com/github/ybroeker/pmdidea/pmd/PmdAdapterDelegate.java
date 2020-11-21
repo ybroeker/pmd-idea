@@ -8,14 +8,14 @@ public final class PmdAdapterDelegate implements PmdAdapter {
     private PmdAdapter delegate;
 
     @Override
-    public String getPmdVersion() {
+    public PmdVersion getPmdVersion() {
         return delegate.getPmdVersion();
     }
 
     @Override
     public void runPmd(final PmdConfiguration pmdConfiguration) {
         if (delegate == null || !delegate.getPmdVersion().equals(pmdConfiguration.getPmdOptions().getPmdVersion())) {
-            delegate = PmdAdapterLocator.getInstance(pmdConfiguration.getPmdOptions().getPmdVersion());
+            delegate = PmdAdapterLoader.getInstance(pmdConfiguration.getPmdOptions().getPmdVersion());
         }
 
         delegate.runPmd(pmdConfiguration);

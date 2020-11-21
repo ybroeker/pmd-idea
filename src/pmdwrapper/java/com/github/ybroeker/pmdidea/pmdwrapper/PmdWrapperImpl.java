@@ -1,7 +1,6 @@
 package com.github.ybroeker.pmdidea.pmdwrapper;
 
-import com.github.ybroeker.pmdidea.pmd.PmdAdapter;
-import com.github.ybroeker.pmdidea.pmd.PmdConfiguration;
+import com.github.ybroeker.pmdidea.pmd.*;
 import net.sourceforge.pmd.PMDVersion;
 
 
@@ -9,8 +8,8 @@ import net.sourceforge.pmd.PMDVersion;
 public class PmdWrapperImpl implements PmdAdapter {
 
     @Override
-    public String getPmdVersion() {
-       return PMDVersion.VERSION;
+    public PmdVersion getPmdVersion() {
+       return PmdVersion.of(PMDVersion.VERSION);
     }
 
 
