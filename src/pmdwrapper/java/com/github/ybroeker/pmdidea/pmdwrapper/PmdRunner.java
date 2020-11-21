@@ -6,6 +6,7 @@ import net.sourceforge.pmd.*;
 import net.sourceforge.pmd.lang.Language;
 import net.sourceforge.pmd.lang.LanguageRegistry;
 import net.sourceforge.pmd.lang.LanguageVersion;
+import net.sourceforge.pmd.util.ResourceLoader;
 import net.sourceforge.pmd.util.datasource.DataSource;
 import net.sourceforge.pmd.util.datasource.FileDataSource;
 import org.slf4j.Logger;
@@ -91,7 +92,7 @@ public class PmdRunner implements Runnable {
             Thread.currentThread().setContextClassLoader(this.getClass().getClassLoader());
             final PMDConfiguration pmdConfig = getPmdConfiguration();
 
-            final RuleSetFactory ruleSetFactory = RulesetsFactoryUtils.createFactory(pmdConfig);
+            final RuleSetFactory ruleSetFactory = RulesetsFactoryUtils.getRulesetFactory(pmdConfig, new ResourceLoader(this.getClass().getClassLoader()));
 
             final PmdRenderer renderer = new PmdRenderer(pmdRunListener);
 

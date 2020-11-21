@@ -138,7 +138,7 @@ tasks[CopyPMDToSandboxTask.TEST_NAME].dependsOn("prepareTestingSandbox")
 tasks[CopyClassesToSandboxTask.TEST_NAME].dependsOn("prepareTestingSandbox")
 
 dependencies {
-    compileOnly("net.sourceforge.pmd:pmd-java:6.27.0")
+    compileOnly("net.sourceforge.pmd:pmd-java:6.0.1")
     val pmdwrapperCompile by configurations
-    pmdwrapperCompile("net.sourceforge.pmd:pmd-java:6.27.0");
+    pmdwrapperCompile("net.sourceforge.pmd:pmd-java:6.0.1");
 }
