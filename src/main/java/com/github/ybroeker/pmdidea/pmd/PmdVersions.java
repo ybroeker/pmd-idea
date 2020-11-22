@@ -40,7 +40,7 @@ public class PmdVersions {
     private static Map<PmdVersion, List<URL>> loadProperties() {
         final String basePath = getBasePath();
 
-        try (InputStream is = PmdAdapterLoader.class.getResourceAsStream(PROPERTIES)) {
+        try (InputStream is = PmdVersions.class.getResourceAsStream(PROPERTIES)) {
             final Properties properties = new Properties();
             properties.load(is);
 
@@ -64,7 +64,7 @@ public class PmdVersions {
 
     @NotNull
     private static String getBasePath() {
-        final List<URL> urls = ((UrlClassLoader) PmdAdapterLoader.class.getClassLoader()).getUrls();
+        final List<URL> urls = ((UrlClassLoader) PmdVersion.class.getClassLoader()).getUrls();
         for (final URL url : urls) {
             final String path = getFilePathFromURL(url);
             final Matcher matcher = LIB_URL.matcher(path);
