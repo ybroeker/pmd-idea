@@ -74,6 +74,13 @@ tasks {
         options.setDeprecation(true)
     }
 
+    runIde {
+        jvmArgs!!.add("-XX:+UnlockDiagnosticVMOptions")
+
+        systemProperty("ide.plugins.snapshot.on.unload.fail", "true")
+    }
+
+
     patchPluginXml {
         version(pluginVersion)
         sinceBuild(pluginSinceBuild)

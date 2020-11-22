@@ -12,6 +12,7 @@
 ### Removed
 
 ### Fixed
+- Require restart after updates, if reload is not possible
 
 ### Security
 ## [1.8.0]

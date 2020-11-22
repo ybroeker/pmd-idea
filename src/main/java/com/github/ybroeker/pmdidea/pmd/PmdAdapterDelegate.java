@@ -36,4 +36,7 @@ public final class PmdAdapterDelegate implements PmdAdapter {
         return service.load(version);
     }
 
+    public boolean hasLoadedPmd() {
+        return delegate != null;
+    }
 }

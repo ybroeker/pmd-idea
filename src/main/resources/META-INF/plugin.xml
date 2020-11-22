@@ -25,6 +25,10 @@
                          displayName="PMD-Check"/>
     </extensions>
 
+    <projectListeners>
+        <listener class="com.github.ybroeker.pmdidea.UnloadListener" topic="com.intellij.ide.plugins.DynamicPluginListener"/>
+    </projectListeners>
+
     <actions>
         <group id="PmdPluginActions" text="PMD" popup="true">
             <action id="PmdScanProjectAction"
