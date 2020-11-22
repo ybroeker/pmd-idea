@@ -3,10 +3,11 @@
 # pmd-idea Changelog
 
 ## [Unreleased]
-### Added
-
 ### Changed
 - Hide PMD log messages
+
+### Fixed
+- Fix incompatibility with older PMD versions
 
 ## [1.0.0]
 ### Added
