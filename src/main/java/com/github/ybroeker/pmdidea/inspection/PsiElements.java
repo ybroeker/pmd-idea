@@ -23,7 +23,6 @@ public final class PsiElements {
         final int[] offsets = new int[lines.length + 1];
         offsets[0] = 0;
 
-
         int currentOffset = 0;
         for (int line = 0; line < lines.length; line++) {
             //PMDs line-nrs start at 1
@@ -33,6 +32,5 @@ public final class PsiElements {
         }
         return offsets;
     }
-
 
 }
