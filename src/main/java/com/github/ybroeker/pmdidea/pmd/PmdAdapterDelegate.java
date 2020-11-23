@@ -30,7 +30,6 @@ public final class PmdAdapterDelegate implements PmdAdapter {
         if (delegate == null || !delegate.getPmdVersion().equals(pmdConfiguration.getPmdOptions().getPmdVersion())) {
             this.delegate = getInstance(pmdConfiguration.getPmdOptions().getPmdVersion());
         }
-        System.out.println(this.delegate.getPmdVersion());
         this.delegate.runPmd(pmdConfiguration);
     }
 
