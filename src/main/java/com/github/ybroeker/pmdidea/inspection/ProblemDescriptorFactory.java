@@ -37,9 +37,26 @@ public final class ProblemDescriptorFactory {
                 target,
                 getDescription(violation),
                 getQuickFix(target, violation),
-                ProblemHighlightType.GENERIC_ERROR_OR_WARNING,
+                getProblemHighlightType(violation),
                 false,
                 false);
+    }
+
+    private ProblemHighlightType getProblemHighlightType(final PmdRuleViolation violation) {
+        switch (violation.getPmdRule().getPmdRulePriority()) {
+            case LOW:
+                return ProblemHighlightType.WEAK_WARNING;
+            case MEDIUM_LOW:
+                return ProblemHighlightType.WEAK_WARNING;
+            case MEDIUM:
+                return ProblemHighlightType.GENERIC_ERROR_OR_WARNING;
+            case MEDIUM_HIGH:
+                return ProblemHighlightType.GENERIC_ERROR_OR_WARNING;
+            case HIGH:
+                return ProblemHighlightType.GENERIC_ERROR;
+            default:
+                throw new AssertionError("Unkown PmdRulePriority: "+violation);
+        }
     }
 
     private @Nullable LocalQuickFix[] getQuickFix(@NotNull final PsiElement target, @NotNull final PmdRuleViolation violation) {
