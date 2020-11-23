@@ -68,12 +68,12 @@ public class ResultTreeRenderer extends ColoredTreeCellRenderer {
 
             this.setIcon(ICONS.get(violation.getPmdRule().getPmdRulePriority()));
 
+            this.append(" [" + violation.getPmdRule().getName() + "]",
+                    SimpleTextAttributes.GRAYED_ATTRIBUTES);
             this.append(violation.getMessage(),
                     SimpleTextAttributes.REGULAR_ATTRIBUTES);
             this.append(" (" + violation.getPosition().getBeginLine() + ":" + violation.getPosition().getBeginColumn() + ")",
                     SimpleTextAttributes.REGULAR_ATTRIBUTES);
-            this.append(" [" + violation.getPmdRule().getName() + "]",
-                    SimpleTextAttributes.GRAYED_ATTRIBUTES);
 
             this.setToolTipText(violation.getPmdRule().getDescription());
 

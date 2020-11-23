@@ -5,6 +5,7 @@
 ## [Unreleased]
 ### Changed
 - Hide PMD log messages
+- Display the violated rule before the message in the toolwindow, so that it is always visible without scrolling
 
 ### Fixed
 - Fix incompatibility with older PMD versions
