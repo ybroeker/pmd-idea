@@ -9,7 +9,7 @@ public class PmdConfiguration {
 
     private final Project project;
 
-    private final List<File> files;
+    private final List<ScannableFile> files;
 
     private final String ruleSets;
 
@@ -17,7 +17,7 @@ public class PmdConfiguration {
 
     private final PmdRunListener pmdRunListener;
 
-    public PmdConfiguration(final Project project, final List<File> files, final String ruleSets, final PmdOptions pmdOptions, final PmdRunListener pmdRunListener) {
+    public PmdConfiguration(final Project project, final List<ScannableFile> files, final String ruleSets, final PmdOptions pmdOptions, final PmdRunListener pmdRunListener) {
         this.project = project;
         this.files = files;
         this.ruleSets = ruleSets;
@@ -29,7 +29,7 @@ public class PmdConfiguration {
         return project;
     }
 
-    public List<File> getFiles() {
+    public List<ScannableFile> getFiles() {
         return files;
     }
 

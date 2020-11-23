@@ -2,8 +2,7 @@ package com.github.ybroeker.pmdidea.actions.scan;
 
 import java.io.File;
 import java.nio.file.*;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 import com.github.ybroeker.pmdidea.config.PmdConfigurationService;
 import com.github.ybroeker.pmdidea.pmd.*;
@@ -15,12 +14,19 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.wm.ToolWindow;
 import com.intellij.openapi.wm.ToolWindowManager;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 
 public abstract class AbstractScanAction extends AnAction {
 
     protected abstract List<File> getFiles(@NotNull final Project project);
+
+    private List<ScannableFile> getScannableFiles(@NotNull final Project project) {
+        List<ScannableFile> scannableFiles = new ArrayList<>();
+        for (final File file : getFiles(project)) {
+            scannableFiles.add(new LocalFile(file));
+        }
+        return scannableFiles;
+    }
 
     @Override
     public void update(@NotNull final AnActionEvent event) {
@@ -68,7 +74,7 @@ public abstract class AbstractScanAction extends AnAction {
 
         final PmdToolPanel toolPanel = (PmdToolPanel) toolWindow.getContentManager().getContent(0).getComponent();
 
-        final List<File> files = getFiles(project);
+        final List<ScannableFile> files = getScannableFiles(project);
 
         final PmdRunListener pmdRunListener = new PmdRunListenerAdapter(toolPanel);
 

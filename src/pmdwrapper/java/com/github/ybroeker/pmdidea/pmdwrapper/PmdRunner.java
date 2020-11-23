@@ -28,10 +28,10 @@ public class PmdRunner implements Runnable {
 
     private final PmdRunListener pmdRunListener;
 
-    public PmdRunner(final Project project, final List<File> files, final String rule, final PmdRunListener pmdRunListener, final PmdOptions pmdOptions) {
+    public PmdRunner(final Project project, final List<ScannableFile> files, final String rule, final PmdRunListener pmdRunListener, final PmdOptions pmdOptions) {
         final List<DataSource> fileDataSources = new ArrayList<>(files.size());
-        for (final File file : files) {
-            fileDataSources.add(new FileDataSource(file));
+        for (final ScannableFile file : files) {
+            fileDataSources.add(new ScannableFileDataSource(file));
         }
         this.project = project;
         this.files = fileDataSources;
