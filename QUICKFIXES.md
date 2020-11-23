@@ -8,3 +8,4 @@ This plugin contains QuickFixes for the following rules:
   - `/* default */` or `/* package */`  can be added as a comment
 - UselessParentheses
 - UseVarargs 
+- UnnecessaryConstructor
