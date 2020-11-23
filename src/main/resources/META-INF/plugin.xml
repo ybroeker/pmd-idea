@@ -17,6 +17,12 @@
 
         <projectConfigurable instance="com.github.ybroeker.pmdidea.config.PmdConfigurable" parentId="tools"/>
         <projectService serviceImplementation="com.github.ybroeker.pmdidea.config.PmdConfigurationService"/>
+
+        <localInspection implementationClass="com.github.ybroeker.pmdidea.inspection.PmdInspection"
+                         enabledByDefault="true"
+                         runForWholeFile="true"
+                         groupName="PMD-Checks"
+                         displayName="PMD-Check"/>
     </extensions>
 
     <actions>
