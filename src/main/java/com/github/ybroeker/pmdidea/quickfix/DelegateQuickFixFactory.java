@@ -19,7 +19,8 @@ public final class DelegateQuickFixFactory implements QuickFixFactory {
             new MakeParameterFinalFixFactory(),
             new MakeLocalVariableFinalFixFactory(),
             new CommentDefaultAccessModifierFixFactory(),
-            new UselessParenthesesFixFactory()
+            new UselessParenthesesFixFactory(),
+            new UseVarargsFixFactory()
     );
 
     @Override
