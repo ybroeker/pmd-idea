@@ -16,13 +16,6 @@ public final class PsiElements {
         return wrapped.findElementAt(offsets[line] + column - 1);
     }
 
-public static char getCharAt(@NotNull final PsiFile wrapped, final int line, final int column) {
-    final int[] offsets = createLineOffsets(wrapped);
-
-    return wrapped.textToCharArray()[offsets[line] + column - 1];
-
-}
-
     private static int[] createLineOffsets(@NotNull final PsiFile wrapped) {
         final String text = wrapped.getText();
         final String[] lines = text.split("\n");
