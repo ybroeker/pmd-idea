@@ -39,4 +39,15 @@ public class UselessParenthesesFix implements LocalQuickFix {
 
         parenthesizedExpression.replace(expression);
     }
+
+    public void applyFix(@NotNull final PsiParenthesizedExpression parenthesizedExpression) {
+        final PsiElement expression = parenthesizedExpression.getExpression();
+        if (expression == null) {
+            return;
+        }
+
+        parenthesizedExpression.replace(expression);
+    }
+
+
 }
