@@ -1,6 +1,6 @@
 package com.github.ybroeker.pmdidea.quickfix;
 
-import com.github.ybroeker.pmdidea.inspection.PsiElements;
+import com.github.ybroeker.pmdidea.inspection.PsiFiles;
 import com.intellij.ide.highlighter.JavaFileType;
 import com.intellij.psi.*;
 import com.intellij.testFramework.LightJavaCodeInsightTestCase;
@@ -14,9 +14,9 @@ public class MakeLocalVariableFinalFixTest extends LightJavaCodeInsightTestCase 
         String fileContent = getInputStreamAsString(MakeLocalVariableFinalFixTest.class.getResourceAsStream("MakeLocalVariableFinalFixTest/testMakeLocalVariableFinal/GivenClass.java"));
         final PsiFile fileFromText = PsiFileFactory.getInstance(getProject()).createFileFromText("TestClass.java", JavaFileType.INSTANCE, fileContent);
 
-        final PsiElement element = PsiElements.getElement(fileFromText, 3, 9);
+        final PsiElement element = PsiFiles.getElement(fileFromText, 3, 9);
 
-        final PsiVariable target = QuickfixFactory.findPsiElement(PsiVariable.class, element);
+        final PsiVariable target = PsiElements.findParentPsiElement(PsiVariable.class, element);
         MakeLocalVariableFinalFix quickFix = new MakeLocalVariableFinalFix("String s");
         quickFix.applyFix(getProject(), target);
 

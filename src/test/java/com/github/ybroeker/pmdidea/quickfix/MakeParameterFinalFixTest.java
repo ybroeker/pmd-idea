@@ -1,6 +1,6 @@
 package com.github.ybroeker.pmdidea.quickfix;
 
-import com.github.ybroeker.pmdidea.inspection.PsiElements;
+import com.github.ybroeker.pmdidea.inspection.PsiFiles;
 import com.intellij.ide.highlighter.JavaFileType;
 import com.intellij.psi.*;
 import com.intellij.testFramework.LightJavaCodeInsightTestCase;
@@ -15,9 +15,9 @@ public class MakeParameterFinalFixTest extends LightJavaCodeInsightTestCase {
         String fileContent = getInputStreamAsString(MakeParameterFinalFixTest.class.getResourceAsStream("MakeParameterFinalFixTest/testMakeParameterFinal/GivenClass.java"));
         final PsiFile fileFromText = PsiFileFactory.getInstance(getProject()).createFileFromText("TestClass.java", JavaFileType.INSTANCE, fileContent);
 
-        final PsiElement element = PsiElements.getElement(fileFromText, 2, 24);
+        final PsiElement element = PsiFiles.getElement(fileFromText, 2, 24);
 
-        final PsiParameter parameter = QuickfixFactory.findParameter(element);
+        final PsiParameter parameter = PsiElements.findParentPsiElement(PsiParameter.class, element);
         MakeParameterFinalFix makeParameterFinalFix = new MakeParameterFinalFix("test");
         makeParameterFinalFix.applyFix(getProject(), parameter);
 

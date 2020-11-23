@@ -8,6 +8,8 @@ import com.intellij.openapi.project.Project;
 import com.intellij.psi.PsiElement;
 import org.jetbrains.annotations.NotNull;
 
+import static com.github.ybroeker.pmdidea.quickfix.PsiElements.findParentPsiElement;
+
 public abstract class AbstractLocalQuickFix<T extends PsiElement> implements LocalQuickFix {
 
     private final Class<T> targetElementType;
@@ -21,7 +23,7 @@ public abstract class AbstractLocalQuickFix<T extends PsiElement> implements Loc
     }
 
     public final void applyFix(@NotNull final Project project, @NotNull final ProblemDescriptor descriptor) {
-        final T parameter = QuickfixFactory.findPsiElement(targetElementType, descriptor.getPsiElement());
+        final T parameter = findParentPsiElement(targetElementType, descriptor.getPsiElement());
         if (parameter == null) {
             return;
         }

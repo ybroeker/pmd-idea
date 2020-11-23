@@ -1,7 +1,8 @@
 package com.github.ybroeker.pmdidea.inspection;
 
 import com.github.ybroeker.pmdidea.pmd.PmdRuleViolation;
-import com.github.ybroeker.pmdidea.quickfix.QuickfixFactory;
+import com.github.ybroeker.pmdidea.quickfix.DelegateQuickFixFactory;
+import com.github.ybroeker.pmdidea.quickfix.QuickFixFactory;
 import com.intellij.codeInspection.*;
 import com.intellij.openapi.components.Service;
 import com.intellij.openapi.project.Project;
@@ -24,7 +25,7 @@ public final class ProblemDescriptorFactory {
     }
 
     public ProblemDescriptor toProblemDescriptor(@NotNull InspectionManager inspectionManager, final PsiFile file, final PmdRuleViolation violation) {
-        final PsiElement start = PsiElements.getElement(file, violation.getPosition().getBeginLine(), violation.getPosition().getBeginColumn());
+        final PsiElement start = PsiFiles.getElement(file, violation.getPosition().getBeginLine(), violation.getPosition().getBeginColumn());
 
         LOGGER.trace("Found PsiElement '{}' in '{}' at {}:{} ", start, file.getName(), violation.getPosition().getBeginLine(), violation.getPosition().getBeginColumn());
 
@@ -37,12 +38,13 @@ public final class ProblemDescriptorFactory {
                 getDescription(violation),
                 getQuickFix(target, violation),
                 ProblemHighlightType.GENERIC_ERROR_OR_WARNING,
+                false,
                 false);
     }
 
-    private @Nullable LocalQuickFix getQuickFix(@NotNull final PsiElement target, @NotNull final PmdRuleViolation violation) {
-        final QuickfixFactory service = project.getService(QuickfixFactory.class);
-        return service.getQuickFix(target, violation);
+    private @Nullable LocalQuickFix[] getQuickFix(@NotNull final PsiElement target, @NotNull final PmdRuleViolation violation) {
+        final QuickFixFactory service = project.getService(DelegateQuickFixFactory.class);
+        return service.getQuickFix(target, violation).toArray(new LocalQuickFix[0]);
     }
 
     private String getDescription(@NotNull final PmdRuleViolation violation) {

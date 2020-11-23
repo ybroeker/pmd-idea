@@ -5,9 +5,9 @@ import com.intellij.psi.PsiFile;
 import org.jetbrains.annotations.NotNull;
 
 
-public final class PsiElements {
+public final class PsiFiles {
 
-    private PsiElements() {
+    private PsiFiles() {
     }
 
     public static PsiElement getElement(@NotNull final PsiFile wrapped, final int line, final int column) {
