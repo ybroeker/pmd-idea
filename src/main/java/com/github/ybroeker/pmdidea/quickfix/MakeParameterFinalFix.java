@@ -1,16 +1,14 @@
 package com.github.ybroeker.pmdidea.quickfix;
 
-import com.intellij.codeInspection.LocalQuickFix;
-import com.intellij.codeInspection.ProblemDescriptor;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.*;
 import org.jetbrains.annotations.NotNull;
 
-public class MakeParameterFinalFix implements LocalQuickFix {
+public class MakeParameterFinalFix extends AbstractLocalQuickFix<PsiParameter> {
 
     private final String parameterName;
 
-    public MakeParameterFinalFix(String parameterName) {
+    public MakeParameterFinalFix(final String parameterName) {
         this.parameterName = parameterName;
     }
 
@@ -27,15 +25,7 @@ public class MakeParameterFinalFix implements LocalQuickFix {
     }
 
     @Override
-    public void applyFix(@NotNull final Project project, @NotNull final ProblemDescriptor descriptor) {
-        final PsiParameter parameter = QuickfixFactory.findParameter(descriptor.getPsiElement());
-        if (parameter == null) {
-            return;
-        }
-        applyFix(parameter);
-    }
-
-    public void applyFix(final PsiParameter parameter) {
+    protected void applyFix(@NotNull final Project project, @NotNull final PsiParameter parameter) {
         final PsiModifierList modifierList = parameter.getModifierList();
         if (modifierList == null) {
             return;

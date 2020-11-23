@@ -13,14 +13,13 @@ public class MakeParameterFinalFixTest extends LightJavaCodeInsightTestCase {
 
     public void testMakeParameterFinal() throws Exception {
         String fileContent = getInputStreamAsString(MakeParameterFinalFixTest.class.getResourceAsStream("MakeParameterFinalFixTest/testMakeParameterFinal/GivenClass.java"));
-        ;
         final PsiFile fileFromText = PsiFileFactory.getInstance(getProject()).createFileFromText("TestClass.java", JavaFileType.INSTANCE, fileContent);
 
         final PsiElement element = PsiElements.getElement(fileFromText, 2, 24);
 
         final PsiParameter parameter = QuickfixFactory.findParameter(element);
         MakeParameterFinalFix makeParameterFinalFix = new MakeParameterFinalFix("test");
-        makeParameterFinalFix.applyFix(parameter);
+        makeParameterFinalFix.applyFix(getProject(), parameter);
 
         String actual = fileFromText.getText();
 

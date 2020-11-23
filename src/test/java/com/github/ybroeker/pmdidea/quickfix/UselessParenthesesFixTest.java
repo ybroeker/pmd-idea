@@ -19,7 +19,7 @@ public class UselessParenthesesFixTest  extends LightJavaCodeInsightTestCase {
 
         final PsiParenthesizedExpression expression = QuickfixFactory.findPsiElement(PsiParenthesizedExpression.class, element);
         UselessParenthesesFix makeParameterFinalFix = new UselessParenthesesFix("(1 + 1)");
-        makeParameterFinalFix.applyFix(expression);
+        makeParameterFinalFix.applyFix(getProject(), expression);
 
         String actual = fileFromText.getText();
 
