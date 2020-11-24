@@ -4,7 +4,7 @@
 
 ## [Unreleased]
 ### Added
-- Quick Fix to suppress warnings for rule and class
+- Quick Fix to suppress warnings for members and class
 
 ### Changed
 
