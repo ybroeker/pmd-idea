@@ -9,3 +9,5 @@ This plugin contains QuickFixes for the following rules:
 - UselessParentheses
 - UseVarargs 
 - UnnecessaryConstructor
+
+Additionally, `@SuppressWarnings` can be automatically applied to members or classes for a specific rule.

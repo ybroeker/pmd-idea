@@ -4,6 +4,7 @@
 
 ## [Unreleased]
 ### Added
+- Quick Fix to suppress warnings for members and class
 
 ### Changed
 
