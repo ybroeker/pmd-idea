@@ -12,6 +12,7 @@
 ### Removed
 
 ### Fixed
+- Fix possible race-condition while loading pmd rules
 
 ### Security
 ## [1.1.0]

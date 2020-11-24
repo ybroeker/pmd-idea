@@ -17,16 +17,18 @@ public class ChildFirstClassLoader extends URLClassLoader {
     }
 
     @Override
-    protected Class<?> loadClass(final String name,final boolean resolve) throws ClassNotFoundException {
-       final Class<?> loadedClass = loadClassInternal(name, resolve);
+    protected Class<?> loadClass(final String name, final boolean resolve) throws ClassNotFoundException {
+        synchronized (getClassLoadingLock(name)) {
+            final Class<?> loadedClass = loadClassInternal(name, resolve);
 
-        if (resolve) {
-            resolveClass(loadedClass);
+            if (resolve) {
+                resolveClass(loadedClass);
+            }
+            return loadedClass;
         }
-        return loadedClass;
     }
 
-    private Class<?> loadClassInternal(final String name,final boolean parentShouldResolve) throws ClassNotFoundException {
+    private Class<?> loadClassInternal(final String name, final boolean parentShouldResolve) throws ClassNotFoundException {
         Class<?> loadedClass = findLoadedClass(name);
         if (loadedClass != null) {
             return loadedClass;
@@ -56,21 +58,21 @@ public class ChildFirstClassLoader extends URLClassLoader {
     public Enumeration<URL> getResources(final String name) throws IOException {
         final List<URL> allRes = new LinkedList<>();
 
-        final  Enumeration<URL> sysResources = sysClzLoader.getResources(name);
+        final Enumeration<URL> sysResources = sysClzLoader.getResources(name);
         if (sysResources != null) {
             while (sysResources.hasMoreElements()) {
                 allRes.add(sysResources.nextElement());
             }
         }
 
-        final  Enumeration<URL> thisRes = findResources(name);
+        final Enumeration<URL> thisRes = findResources(name);
         if (thisRes != null) {
             while (thisRes.hasMoreElements()) {
                 allRes.add(thisRes.nextElement());
             }
         }
 
-        final  Enumeration<URL> parentRes = super.findResources(name);
+        final Enumeration<URL> parentRes = super.findResources(name);
         if (parentRes != null) {
             while (parentRes.hasMoreElements()) {
                 allRes.add(parentRes.nextElement());
@@ -91,7 +93,6 @@ public class ChildFirstClassLoader extends URLClassLoader {
             }
         };
     }
-
 
 
     @Override
