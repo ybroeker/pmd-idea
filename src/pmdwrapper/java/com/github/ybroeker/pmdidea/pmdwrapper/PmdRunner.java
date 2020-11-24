@@ -6,14 +6,12 @@ import com.intellij.openapi.module.ModuleManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.roots.OrderEnumerator;
 import net.sourceforge.pmd.*;
+import net.sourceforge.pmd.cache.AnalysisCache;
 import net.sourceforge.pmd.lang.Language;
 import net.sourceforge.pmd.lang.LanguageRegistry;
 import net.sourceforge.pmd.lang.LanguageVersion;
 import net.sourceforge.pmd.util.ResourceLoader;
 import net.sourceforge.pmd.util.datasource.DataSource;
-import net.sourceforge.pmd.util.datasource.FileDataSource;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.*;
 import java.util.*;
@@ -22,8 +20,6 @@ import static java.util.Collections.singletonList;
 
 public class PmdRunner implements Runnable {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(PmdRunner.class);
-
     private final Project project;
     private final List<DataSource> files;
     private final String ruleSets;
@@ -31,7 +27,9 @@ public class PmdRunner implements Runnable {
 
     private final PmdRunListener pmdRunListener;
 
-    public PmdRunner(final Project project, final List<ScannableFile> files, final String rule, final PmdRunListener pmdRunListener, final PmdOptions pmdOptions) {
+    private final AnalysisCache analysisCache;
+
+    private PmdRunner(final Project project, final List<ScannableFile> files, final String rule, final PmdRunListener pmdRunListener, final PmdOptions pmdOptions, final AnalysisCache analysisCache) {
         final List<DataSource> fileDataSources = new ArrayList<>(files.size());
         for (final ScannableFile file : files) {
             fileDataSources.add(new ScannableFileDataSource(file));
@@ -41,10 +39,11 @@ public class PmdRunner implements Runnable {
         this.ruleSets = rule;
         this.pmdOptions = pmdOptions;
         this.pmdRunListener = pmdRunListener;
+        this.analysisCache = analysisCache;
     }
 
-    public PmdRunner(final PmdConfiguration pmdConfiguration) {
-        this(pmdConfiguration.getProject(), pmdConfiguration.getFiles(), pmdConfiguration.getRuleSets(), pmdConfiguration.getPmdRunListener(), pmdConfiguration.getPmdOptions());
+    public PmdRunner(final PmdConfiguration pmdConfiguration, final AnalysisCache analysisCache) {
+        this(pmdConfiguration.getProject(), pmdConfiguration.getFiles(), pmdConfiguration.getRuleSets(), pmdConfiguration.getPmdRunListener(), pmdConfiguration.getPmdOptions(), analysisCache);
     }
 
     private PMDConfiguration getPmdConfiguration() {
@@ -56,14 +55,7 @@ public class PmdRunner implements Runnable {
             throw new UncheckedIOException(e);
         }
 
-        Optional<File> cache = CacheFiles.getCacheFile(project);
-        if (shouldUsePmdCache() && cache.isPresent()) {
-            final String cacheFile = cache.get().getAbsolutePath();
-            LOGGER.debug("PMD-Cache is used: {}", cacheFile);
-            pmdConfig.setAnalysisCacheLocation(cacheFile);
-        } else {
-            LOGGER.debug("PMD-Cache is not used: shouldUseCache: {}, cacheFile: {}", shouldUsePmdCache(), cache);
-        }
+        pmdConfig.setAnalysisCache(analysisCache);
 
         final Language lang = LanguageRegistry.getLanguage("Java");
         final String type = pmdOptions.getTargetJdk();
@@ -86,19 +78,6 @@ public class PmdRunner implements Runnable {
             joiner.add(OrderEnumerator.orderEntries(module).recursively().getPathsList().getPathsString());
         }
         return joiner.toString();
-    }
-
-    /**
-     * Checks if a scan should use the cache.
-     * <p>
-     * The cache should currently only be used when scanning more than one file.
-     * This prevents individual file scans from overwriting a populated cache,
-     * which would prevent the next full project scan from benefiting from it.
-     *
-     * @return if the scan should be used
-     */
-    private boolean shouldUsePmdCache() {
-        return files.size() > 1;
     }
 
     @Override

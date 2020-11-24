@@ -7,6 +7,8 @@ import net.sourceforge.pmd.PMDVersion;
 @SuppressWarnings("unused")//Called by reflection
 public class PmdWrapperImpl implements PmdAdapter {
 
+    private final InMemAnalysisCache analysisCache = new InMemAnalysisCache();
+
     @Override
     public PmdVersion getPmdVersion() {
        return PmdVersion.of(PMDVersion.VERSION);
@@ -15,7 +17,7 @@ public class PmdWrapperImpl implements PmdAdapter {
 
     @Override
     public void runPmd(final PmdConfiguration pmdConfiguration) {
-        final PmdRunner pmdRunner = new PmdRunner(pmdConfiguration);
+        final PmdRunner pmdRunner = new PmdRunner(pmdConfiguration, analysisCache);
 
         pmdRunner.run();
     }
