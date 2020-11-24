@@ -9,7 +9,7 @@ import com.github.ybroeker.pmdidea.pmd.*;
 import com.github.ybroeker.pmdidea.toolwindow.PmdToolPanel;
 import com.github.ybroeker.pmdidea.toolwindow.PmdToolWindowFactory;
 import com.intellij.openapi.actionSystem.*;
-import com.intellij.openapi.application.ApplicationManager;
+import com.intellij.openapi.application.*;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.wm.ToolWindow;
 import com.intellij.openapi.wm.ToolWindowManager;
@@ -83,10 +83,10 @@ public abstract class AbstractScanAction extends AnAction {
         final PmdOptions pmdOptions = new PmdOptions(service.getState().getJdkVersion().toString(), service.getState().getPmdVersion());
         PmdConfiguration configuration = new PmdConfiguration(project, files, rulesPath.get().toFile().getAbsolutePath(), pmdOptions, pmdRunListener);
 
+        //TODO: check if real files are needed
+        //TODO: ReadAction needed?
         ApplicationManager.getApplication().saveAll();
-        ApplicationManager.getApplication().runReadAction(() -> {
-            ApplicationManager.getApplication().executeOnPooledThread(() -> pmdAdapter.runPmd(configuration));
-        });
+        ApplicationManager.getApplication().executeOnPooledThread(() -> pmdAdapter.runPmd(configuration));
     }
 
 

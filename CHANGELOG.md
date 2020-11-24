@@ -13,6 +13,7 @@
 
 ### Fixed
 - Fix possible race-condition while loading pmd rules
+- Fix possible exception while running inspection 
 
 ### Security
 ## [1.1.0]

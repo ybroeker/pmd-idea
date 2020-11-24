@@ -44,7 +44,7 @@ public class PmdInspection extends LocalInspectionTool {
             return new ProblemDescriptor[0];
         }
 
-        final VirtuallyFile virtuallyFile = new VirtuallyFile(psiFile);
+        final ScannablePsiFile scannableFile = new ScannablePsiFile(psiFile);
 
         final PmdConfigurationService service = project.getService(PmdConfigurationService.class);
 
@@ -52,7 +52,7 @@ public class PmdInspection extends LocalInspectionTool {
 
         final ViolationCollector pmdRunListener = new ViolationCollector();
 
-        final PmdConfiguration configuration = new PmdConfiguration(project, Collections.singletonList(virtuallyFile), rulesPath.get().toFile().getAbsolutePath(), pmdOptions, pmdRunListener);
+        final PmdConfiguration configuration = new PmdConfiguration(project, Collections.singletonList(scannableFile), rulesPath.get().toFile().getAbsolutePath(), pmdOptions, pmdRunListener);
 
         final PmdAdapterDelegate pmdAdapter = project.getService(PmdAdapterDelegate.class);
         pmdAdapter.runPmd(configuration);
