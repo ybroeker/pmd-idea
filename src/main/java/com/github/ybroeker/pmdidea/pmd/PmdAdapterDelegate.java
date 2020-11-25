@@ -4,8 +4,8 @@ import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.util.List;
 
-import com.intellij.ide.plugins.cl.PluginClassLoader;
 import com.intellij.openapi.components.Service;
+import com.intellij.openapi.project.Project;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,7 +18,14 @@ public final class PmdAdapterDelegate implements PmdAdapter {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(PmdAdapterDelegate.class);
 
+    private final Project project;
+
     private PmdAdapter delegate;
+
+    public PmdAdapterDelegate(final Project project) {
+        this.project = project;
+    }
+
 
     @Override
     public PmdVersion getPmdVersion() {
@@ -34,19 +41,20 @@ public final class PmdAdapterDelegate implements PmdAdapter {
     }
 
     @NotNull
-    private PmdAdapter getInstance(PmdVersion version) {
-        final List<URL> urls = PmdVersions.getUrls(version);
-        final PluginClassLoader parentClassLoader = (PluginClassLoader) PmdAdapterDelegate.class.getClassLoader();
+    private PmdAdapter getInstance(final PmdVersion version) {
+        final PmdClassloaderFactory service = project.getService(PmdClassloaderFactory.class);
+        final List<URL> urls = service.getUrls(version);
+        final ClassLoader parentClassLoader = PmdAdapterDelegate.class.getClassLoader();
         final ClassLoader classLoader = new ChildFirstClassLoader(urls.toArray(new URL[0]), parentClassLoader);
 
         try {
-            Class<?> clazz = classLoader.loadClass(IMPL);
+            final Class<?> clazz = classLoader.loadClass(IMPL);
             final PmdAdapter pmdAdapter = (PmdAdapter) clazz.getConstructor().newInstance();
             LOGGER.debug("Using PmdAdapter with version '{}'", pmdAdapter.getPmdVersion());
             return pmdAdapter;
 
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
-            throw new RuntimeException(e);
+            throw new CouldNotLoadPmdException(e);
         }
     }
 
