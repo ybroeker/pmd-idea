@@ -7,6 +7,7 @@
 - Quick Fix to suppress warnings for members and class
 
 ### Changed
+- Run inspection only on java files
 
 ### Deprecated
 

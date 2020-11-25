@@ -6,6 +6,7 @@ import java.util.*;
 import com.github.ybroeker.pmdidea.config.PmdConfigurationService;
 import com.github.ybroeker.pmdidea.pmd.*;
 import com.intellij.codeInspection.*;
+import com.intellij.ide.highlighter.JavaFileType;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.PsiFile;
 import org.jetbrains.annotations.NotNull;
@@ -30,40 +31,53 @@ public class PmdInspection extends LocalInspectionTool {
         return Optional.of(rulesPath);
     }
 
-
     @Override
     public ProblemDescriptor[] checkFile(@NotNull final PsiFile psiFile,
                                          @NotNull final InspectionManager manager,
                                          final boolean isOnTheFly) {
-        LOGGER.debug("Inspect File: '{}'", psiFile);
+        LOGGER.trace("Try inspect File: '{}'", psiFile.getName());
+        if (!psiFile.getFileType().equals(JavaFileType.INSTANCE)) {
+            LOGGER.trace("Skip inspection, not a java file");
+            return ProblemDescriptor.EMPTY_ARRAY;
+        }
+
         final Project project = manager.getProject();
 
         final Optional<Path> rulesPath = getRules(project);
         if (!rulesPath.isPresent()) {
-            LOGGER.debug("Skip inspection, no rules configured");
-            return new ProblemDescriptor[0];
+            LOGGER.trace("Skip inspection, no rules configured");
+            return ProblemDescriptor.EMPTY_ARRAY;
         }
 
         final ScannablePsiFile scannableFile = new ScannablePsiFile(psiFile);
 
+        final List<PmdRuleViolation> violations = runPmd(project, scannableFile, rulesPath.get());
+        return getProblemDescriptors(manager, psiFile, violations);
+    }
+
+    private List<PmdRuleViolation> runPmd(final Project project, final ScannablePsiFile scannableFile, final Path rules) {
+        LOGGER.trace("Inspect File: '{}'", scannableFile.getDisplayName());
         final PmdConfigurationService service = project.getService(PmdConfigurationService.class);
 
         final PmdOptions pmdOptions = new PmdOptions(service.getState().getJdkVersion().toString(), service.getState().getPmdVersion());
 
         final ViolationCollector pmdRunListener = new ViolationCollector();
 
-        final PmdConfiguration configuration = new PmdConfiguration(project, Collections.singletonList(scannableFile), rulesPath.get().toFile().getAbsolutePath(), pmdOptions, pmdRunListener);
+        final PmdConfiguration configuration = new PmdConfiguration(project, Collections.singletonList(scannableFile), rules.toFile().getAbsolutePath(), pmdOptions, pmdRunListener);
 
         final PmdAdapterDelegate pmdAdapter = project.getService(PmdAdapterDelegate.class);
+        final long start = System.currentTimeMillis();
         pmdAdapter.runPmd(configuration);
+        final long end = System.currentTimeMillis();
 
-        return getProblemDescriptors(manager, psiFile, pmdRunListener.getViolations());
+        LOGGER.trace("Inspected File: '{}' in {}ms", scannableFile.getDisplayName(), end-start);
+        return pmdRunListener.getViolations();
     }
 
     private ProblemDescriptor[] getProblemDescriptors(@NotNull final InspectionManager manager, final PsiFile file, final List<PmdRuleViolation> violations) {
         final ProblemDescriptorFactory problemDescriptorFactory = manager.getProject().getService(ProblemDescriptorFactory.class);
 
-        List<ProblemDescriptor> problemDescriptors = new ArrayList<>();
+        final List<ProblemDescriptor> problemDescriptors = new ArrayList<>();
 
         for (final PmdRuleViolation violation : violations) {
             problemDescriptors.add(problemDescriptorFactory.toProblemDescriptor(manager, file, violation));
