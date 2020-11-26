@@ -79,19 +79,26 @@ public class ChildFirstClassLoader extends URLClassLoader {
             }
         }
 
-        return new Enumeration<URL>() {
-            private final Iterator<URL> it = allRes.iterator();
+        return new IteratorEnumeration<>(allRes.iterator());
+    }
 
-            @Override
-            public boolean hasMoreElements() {
-                return it.hasNext();
-            }
+    private static class IteratorEnumeration<T> implements Enumeration<T> {
 
-            @Override
-            public URL nextElement() {
-                return it.next();
-            }
-        };
+        private final Iterator<T> it;
+
+        public IteratorEnumeration(final Iterator<T> it) {
+            this.it = it;
+        }
+
+        @Override
+        public boolean hasMoreElements() {
+            return it.hasNext();
+        }
+
+        @Override
+        public T nextElement() {
+            return it.next();
+        }
     }
 
 
