@@ -1,7 +1,10 @@
 package com.github.ybroeker.pmdidea.pmdwrapper;
 
 import com.github.ybroeker.pmdidea.pmd.*;
+import com.intellij.openapi.module.Module;
+import com.intellij.openapi.module.ModuleManager;
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.roots.OrderEnumerator;
 import net.sourceforge.pmd.*;
 import net.sourceforge.pmd.lang.Language;
 import net.sourceforge.pmd.lang.LanguageRegistry;
@@ -12,7 +15,7 @@ import net.sourceforge.pmd.util.datasource.FileDataSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.File;
+import java.io.*;
 import java.util.*;
 
 import static java.util.Collections.singletonList;
@@ -47,7 +50,11 @@ public class PmdRunner implements Runnable {
     private PMDConfiguration getPmdConfiguration() {
         final PMDConfiguration pmdConfig = new PMDConfiguration();
 
-        //TODO: classpath
+        try {
+            pmdConfig.prependClasspath(getClassPath());
+        } catch (IOException e) {
+            throw new UncheckedIOException(e);
+        }
 
         Optional<File> cache = CacheFiles.getCacheFile(project);
         if (shouldUsePmdCache() && cache.isPresent()) {
@@ -70,6 +77,15 @@ public class PmdRunner implements Runnable {
         pmdConfig.setRuleSets(ruleSets);
 
         return pmdConfig;
+    }
+
+    private String getClassPath() {
+        final Module[] modules = ModuleManager.getInstance(project).getModules();
+        final StringJoiner joiner = new StringJoiner(File.pathSeparator);
+        for (final Module module : modules) {
+            joiner.add(OrderEnumerator.orderEntries(module).recursively().getPathsList().getPathsString());
+        }
+        return joiner.toString();
     }
 
     /**
