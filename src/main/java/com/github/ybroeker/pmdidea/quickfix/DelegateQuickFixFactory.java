@@ -22,6 +22,10 @@ public final class DelegateQuickFixFactory implements QuickFixFactory {
             new UselessParenthesesFixFactory(),
             new UseVarargsFixFactory(),
             new UnnecessaryConstructorFixFactory(),
+            new FieldNamingConventionsFixFactory(),
+            new MissingSerialVersionUIDFixFactory(),
+            new CallSuperInConstructorFixFactory(),
+
             new SuppressPmdFixFactory()
     );
 

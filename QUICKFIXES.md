@@ -9,5 +9,9 @@ This plugin contains QuickFixes for the following rules:
 - UselessParentheses
 - UseVarargs 
 - UnnecessaryConstructor
+- CallSuperInConstructor
+- FieldNamingConventions
+  - opens IntelliJs rename dialog
+- MissingSerialVersionUID
 
 Additionally, `@SuppressWarnings` can be automatically applied to members or classes for a specific rule.
