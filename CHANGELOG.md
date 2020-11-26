@@ -16,6 +16,7 @@
 ### Fixed
 - Fix possible race-condition while loading pmd rules
 - Fix possible exception while running inspection 
+- Set auxiliary classpath for pmd
 
 ### Security
 ## [1.1.0]
