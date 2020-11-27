@@ -1,5 +1,8 @@
 package com.github.ybroeker.pmdidea.pmdwrapper;
 
+import java.io.*;
+import java.util.*;
+
 import com.github.ybroeker.pmdidea.pmd.*;
 import com.intellij.openapi.module.Module;
 import com.intellij.openapi.module.ModuleManager;
@@ -7,14 +10,9 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.roots.OrderEnumerator;
 import net.sourceforge.pmd.*;
 import net.sourceforge.pmd.cache.AnalysisCache;
-import net.sourceforge.pmd.lang.Language;
-import net.sourceforge.pmd.lang.LanguageRegistry;
-import net.sourceforge.pmd.lang.LanguageVersion;
-import net.sourceforge.pmd.util.ResourceLoader;
+import net.sourceforge.pmd.lang.*;
+import net.sourceforge.pmd.processor.*;
 import net.sourceforge.pmd.util.datasource.DataSource;
-
-import java.io.*;
-import java.util.*;
 
 import static java.util.Collections.singletonList;
 
@@ -29,7 +27,9 @@ public class PmdRunner implements Runnable {
 
     private final AnalysisCache analysisCache;
 
-    private PmdRunner(final Project project, final List<ScannableFile> files, final String rule, final PmdRunListener pmdRunListener, final PmdOptions pmdOptions, final AnalysisCache analysisCache) {
+    private final RuleSetFactory ruleSetFactory;
+
+    private PmdRunner(final Project project, final List<ScannableFile> files, final String rule, final PmdRunListener pmdRunListener, final PmdOptions pmdOptions, final AnalysisCache analysisCache, final RuleSetFactory ruleSetFactory) {
         final List<DataSource> fileDataSources = new ArrayList<>(files.size());
         for (final ScannableFile file : files) {
             fileDataSources.add(new ScannableFileDataSource(file));
@@ -40,10 +40,11 @@ public class PmdRunner implements Runnable {
         this.pmdOptions = pmdOptions;
         this.pmdRunListener = pmdRunListener;
         this.analysisCache = analysisCache;
+        this.ruleSetFactory = ruleSetFactory;
     }
 
-    public PmdRunner(final PmdConfiguration pmdConfiguration, final AnalysisCache analysisCache) {
-        this(pmdConfiguration.getProject(), pmdConfiguration.getFiles(), pmdConfiguration.getRuleSets(), pmdConfiguration.getPmdRunListener(), pmdConfiguration.getPmdOptions(), analysisCache);
+    public PmdRunner(final PmdConfiguration pmdConfiguration, final AnalysisCache analysisCache, final RuleSetFactory ruleSetFactory) {
+        this(pmdConfiguration.getProject(), pmdConfiguration.getFiles(), pmdConfiguration.getRuleSets(), pmdConfiguration.getPmdRunListener(), pmdConfiguration.getPmdOptions(), analysisCache, ruleSetFactory);
     }
 
     private PMDConfiguration getPmdConfiguration() {
@@ -85,18 +86,33 @@ public class PmdRunner implements Runnable {
         final ClassLoader original = Thread.currentThread().getContextClassLoader();
         try {
             Thread.currentThread().setContextClassLoader(this.getClass().getClassLoader());
-            final PMDConfiguration pmdConfig = getPmdConfiguration();
-
-            final RuleSetFactory ruleSetFactory = RulesetsFactoryUtils.getRulesetFactory(pmdConfig, new ResourceLoader(this.getClass().getClassLoader()));
+            final PMDConfiguration configuration = getPmdConfiguration();
 
             final PmdRenderer renderer = new PmdRenderer(pmdRunListener);
 
             renderer.setWriter(new NullWriter());
             renderer.start();
 
-            pmdRunListener.start(files.size());
 
-            PMD.processFiles(pmdConfig, ruleSetFactory, files, new RuleContext(), singletonList(renderer));
+            final List<DataSource> dataSources = new ArrayList<>(files);
+            dataSources.sort(Comparator.comparing(ds -> ds.getNiceFileName(false, "")));
+
+            final RuleContext ctx = new RuleContext();
+
+            ctx.getReport().addListener(configuration.getAnalysisCache());
+
+            pmdRunListener.start(files.size());
+            AbstractPMDProcessor abstractPMDProcessor;
+            if (dataSources.size() > 1) {
+                abstractPMDProcessor = new MultiThreadProcessor(configuration);
+            } else {
+                abstractPMDProcessor = new MonoThreadProcessor(configuration);
+            }
+            abstractPMDProcessor.processFiles(ruleSetFactory, dataSources, ctx, singletonList(renderer));
+
+
+            // Persist the analysis cache
+            configuration.getAnalysisCache().persist();
 
             renderer.end();
             renderer.flush();
