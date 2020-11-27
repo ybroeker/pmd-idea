@@ -46,11 +46,10 @@ public class PmdWrapperImpl implements PmdAdapter {
         pmdRunner.run();
     }
 
-    @SuppressWarnings("lgtm [java/weak-cryptographic-algorithm]")
     private int getRulesHash(final PmdConfiguration pmdConfiguration) {
         final MessageDigest md5;
         try {
-            md5 = MessageDigest.getInstance("MD5");
+            md5 = MessageDigest.getInstance("MD5"); // lgtm [java/weak-cryptographic-algorithm]
         } catch (NoSuchAlgorithmException e) {
             throw new AssertionError("MD5 not available", e);
         }
