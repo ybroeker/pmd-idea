@@ -46,7 +46,7 @@ public class PmdWrapperImpl implements PmdAdapter {
         pmdRunner.run();
     }
 
-    @SupressWarnings("lgtm[java/weak-cryptographic-algorithm]")
+    @SuppressWarnings("lgtm[java/weak-cryptographic-algorithm]")
     private int getRulesHash(final PmdConfiguration pmdConfiguration) {
         final MessageDigest md5;
         try {
