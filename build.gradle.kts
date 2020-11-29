@@ -1,6 +1,6 @@
+import com.github.ybroeker.pmdidea.build.*
 import org.jetbrains.changelog.closure
 import org.jetbrains.changelog.markdownToHTML
-import com.github.ybroeker.pmdidea.build.*;
 
 plugins {
     id("java")
@@ -139,7 +139,17 @@ tasks[CopyPMDToSandboxTask.TEST_NAME].dependsOn("prepareTestingSandbox")
 tasks[CopyClassesToSandboxTask.TEST_NAME].dependsOn("prepareTestingSandbox")
 
 dependencies {
+    testImplementation("org.junit.jupiter:junit-jupiter-api:5.7.0")
+    testImplementation("org.junit.jupiter:junit-jupiter-params:5.7.0")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine")
+    testCompileOnly("junit:junit:4.13")
+    testRuntimeOnly("org.junit.vintage:junit-vintage-engine")
+
     compileOnly("net.sourceforge.pmd:pmd-java:6.0.1")
     val pmdwrapperCompile by configurations
     pmdwrapperCompile("net.sourceforge.pmd:pmd-java:6.0.1");
+}
+
+tasks.named<Test>("test") {
+    useJUnitPlatform()
 }

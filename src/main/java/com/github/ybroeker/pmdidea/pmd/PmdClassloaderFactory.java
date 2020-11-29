@@ -2,21 +2,21 @@ package com.github.ybroeker.pmdidea.pmd;
 
 
 import java.io.File;
-import java.net.*;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
+import com.github.ybroeker.pmdidea.PmdPlugin;
+import com.intellij.ide.plugins.IdeaPluginDescriptor;
+import com.intellij.ide.plugins.PluginManager;
 import com.intellij.openapi.components.Service;
-import com.intellij.util.lang.UrlClassLoader;
+import com.intellij.openapi.extensions.PluginId;
 import org.jetbrains.annotations.NotNull;
 
 @Service
 public final class PmdClassloaderFactory {
 
     private static final String PMD_CLASSES_DIR = "pmd/classes";
-
-    private static final Pattern LIB_URL = Pattern.compile("^(.*?)[/\\\\]lib[/\\\\]?.*\\.jar$");
 
     @NotNull
     public List<URL> getUrls(final PmdVersion pmdVersion) {
@@ -34,37 +34,13 @@ public final class PmdClassloaderFactory {
         }
     }
 
-    private static List<URL> getBaseUrls() {
-        final ClassLoader cl = PmdVersion.class.getClassLoader();
-        if (cl instanceof UrlClassLoader) {
-            return ((UrlClassLoader) cl).getUrls();
-        }
-        if (cl instanceof URLClassLoader) {
-            return Arrays.asList(((URLClassLoader) cl).getURLs());
-        }
-        throw new AssertionError("Unknown ClassLoader: " + cl);
-    }
-
     @NotNull
     private static String getBasePath() {
-        final List<URL> urls = getBaseUrls();
-        for (final URL url : urls) {
-            final String path = getFilePathFromURL(url);
-            final Matcher matcher = LIB_URL.matcher(path);
-            if (matcher.find()) {
-                return matcher.group(1);
-            }
+        final IdeaPluginDescriptor plugin = PluginManager.getPlugin(PluginId.getId(PmdPlugin.PLUGIN_ID));
+        if (plugin == null) {
+            throw new AssertionError("Plugin not found: " + PmdPlugin.PLUGIN_ID);
         }
-        throw new CouldNotLoadPmdException("Could not determine plugin directory");
-    }
-
-    @NotNull
-    private static String getFilePathFromURL(final URL url) {
-        try {
-            return new File(url.toURI()).getAbsolutePath();
-        } catch (URISyntaxException e) {
-            throw new CouldNotLoadPmdException(e);
-        }
+        return plugin.getPath().getAbsolutePath();
     }
 
 }
