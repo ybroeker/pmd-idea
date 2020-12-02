@@ -4,22 +4,18 @@
 
 ## [Unreleased]
 ### Added
+- More quickfixes, see [QUICKFIXES](https://github.com/ybroeker/pmd-idea/blob/main/QUICKFIXES.md) for a complete List
 - Quick Fix to suppress warnings for members and class
 - Add option to disable on-the-fly inspections
 
 ### Changed
 - Run inspection only on java files
 
-### Deprecated
-
-### Removed
-
 ### Fixed
 - Fix possible race-condition while loading pmd rules
 - Fix possible exception while running inspection 
 - Set auxiliary classpath for pmd
 
-### Security
 ## [1.1.0]
 ### Added
 - Inspections to show violations directly in editor and while inspect code
