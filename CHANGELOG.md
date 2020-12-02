@@ -4,6 +4,18 @@
 
 ## [Unreleased]
 ### Added
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+### Security
+## [1.2.0]
+### Added
 - More quickfixes, see [QUICKFIXES](https://github.com/ybroeker/pmd-idea/blob/main/QUICKFIXES.md) for a complete List
 - Quick Fix to suppress warnings for members and class
 - Add option to disable on-the-fly inspections
