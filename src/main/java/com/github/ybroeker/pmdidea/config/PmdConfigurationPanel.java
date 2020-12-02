@@ -21,6 +21,8 @@ public class PmdConfigurationPanel extends JPanel {
 
     private final JCheckBox scanTestSources;
 
+    private final JCheckBox runOnTheFlyInspection;
+
     private final ComboBox<PmdVersion> versionComboBox;
 
     private final ComboBox<JavaVersion> jdkComboBox;
@@ -34,6 +36,7 @@ public class PmdConfigurationPanel extends JPanel {
         PmdConfigurationService.State originalState =  project.getService(PmdConfigurationService.class).getState();
 
         this.scanTestSources = buildScanTestSources(originalState);
+        this.runOnTheFlyInspection = buildRunOnTheFlyInspection(originalState);
         this.versionComboBox = buildVersionComboBox(originalState);
         this.jdkComboBox = buildJdkComboBox(originalState);
         this.rulesFile = buildRulesField(project, originalState);
@@ -47,6 +50,16 @@ public class PmdConfigurationPanel extends JPanel {
         scanTestSources.setAlignmentX(Component.LEFT_ALIGNMENT);
 
         return scanTestSources;
+    }
+
+    private JCheckBox buildRunOnTheFlyInspection(final PmdConfigurationService.@NotNull State stateBuilder) {
+        final JCheckBox onTheFlyInspection = new JCheckBox();
+        onTheFlyInspection.setText("Run inspection on the fly");
+        onTheFlyInspection.setSelected(stateBuilder.isCheckTests());
+        this.add(onTheFlyInspection);
+        onTheFlyInspection.setAlignmentX(Component.LEFT_ALIGNMENT);
+
+        return onTheFlyInspection;
     }
 
     private ComboBox<JavaVersion> buildJdkComboBox(final PmdConfigurationService.@NotNull State stateBuilder) {
@@ -103,7 +116,8 @@ public class PmdConfigurationPanel extends JPanel {
         return new PmdConfigurationService.@NotNull State(rulesFile.getText(),
                 scanTestSources.isSelected(),
                 (PmdVersion) versionComboBox.getSelectedItem(),
-                (JavaVersion) jdkComboBox.getSelectedItem()
+                (JavaVersion) jdkComboBox.getSelectedItem(),
+                runOnTheFlyInspection.isSelected()
         );
     }
 
@@ -118,6 +132,7 @@ public class PmdConfigurationPanel extends JPanel {
         scanTestSources.setSelected(originalState.isCheckTests());
         versionComboBox.setSelectedItem(originalState.getPmdVersion());
         jdkComboBox.setSelectedItem(originalState.getJdkVersion());
+        runOnTheFlyInspection.setSelected(originalState.isRunOnTheFlyInspection());
     }
 
     public void apply() {

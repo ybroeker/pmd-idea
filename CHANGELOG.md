@@ -5,6 +5,7 @@
 ## [Unreleased]
 ### Added
 - Quick Fix to suppress warnings for members and class
+- Add option to disable on-the-fly inspections
 
 ### Changed
 - Run inspection only on java files

@@ -42,6 +42,11 @@ public class PmdInspection extends LocalInspectionTool {
         }
 
         final Project project = manager.getProject();
+        final PmdConfigurationService service = project.getService(PmdConfigurationService.class);
+        if (isOnTheFly && !service.getState().isRunOnTheFlyInspection()) {
+            LOGGER.trace("Skip inspection, on the fly inspections disabled");
+            return ProblemDescriptor.EMPTY_ARRAY;
+        }
 
         final Optional<Path> rulesPath = getRules(project);
         if (!rulesPath.isPresent()) {

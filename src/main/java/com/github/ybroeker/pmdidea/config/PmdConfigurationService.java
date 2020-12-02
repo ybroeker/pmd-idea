@@ -60,14 +60,18 @@ public class PmdConfigurationService implements PersistentStateComponent<PmdConf
         @OptionTag(converter = JavaVersionConverter.class)
         private JavaVersion jdkVersion;
 
+        @OptionTag
+        private boolean runOnTheFlyInspection = true;
+
         public State() {
         }
 
-        public State(final String rulesPath, final boolean checkTests, final PmdVersion pmdVersion, final JavaVersion jdkVersion) {
+        public State(final String rulesPath, final boolean checkTests, final PmdVersion pmdVersion, final JavaVersion jdkVersion, final boolean runOnTheFlyInspection) {
             this.rulesPath = rulesPath;
             this.checkTests = checkTests;
             this.pmdVersion = pmdVersion;
             this.jdkVersion = jdkVersion;
+            this.runOnTheFlyInspection = runOnTheFlyInspection;
         }
 
         public String getRulesPath() {
@@ -86,6 +90,10 @@ public class PmdConfigurationService implements PersistentStateComponent<PmdConf
             return jdkVersion;
         }
 
+        public boolean isRunOnTheFlyInspection() {
+            return runOnTheFlyInspection;
+        }
+
         @Override
         public boolean equals(final Object other) {
             if (this == other) {
@@ -96,6 +104,7 @@ public class PmdConfigurationService implements PersistentStateComponent<PmdConf
             }
             final State state = (State) other;
             return checkTests == state.checkTests
+                   && runOnTheFlyInspection == state.runOnTheFlyInspection
                    && Objects.equals(rulesPath, state.rulesPath)
                    && Objects.equals(pmdVersion, state.pmdVersion)
                    && Objects.equals(jdkVersion, state.jdkVersion);
