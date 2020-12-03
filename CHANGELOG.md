@@ -5,6 +5,7 @@
 ## [Unreleased]
 ### Added
 - Add support for PMD 6.30
+- More quickfixes, see [QUICKFIXES](https://github.com/ybroeker/pmd-idea/blob/main/QUICKFIXES.md) for a complete List
 
 ### Changed
 - Show description for rule violation instead generic rule description
