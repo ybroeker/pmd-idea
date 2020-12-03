@@ -7,7 +7,6 @@ import com.github.ybroeker.pmdidea.pmd.*;
 import net.sourceforge.pmd.*;
 import net.sourceforge.pmd.renderers.AbstractIncrementingRenderer;
 import net.sourceforge.pmd.util.datasource.DataSource;
-import org.jetbrains.annotations.NotNull;
 
 public class PmdRenderer extends AbstractIncrementingRenderer {
 
@@ -45,8 +44,7 @@ public class PmdRenderer extends AbstractIncrementingRenderer {
             PmdRule rule = map(ruleViolation.getRule());
             PmdRuleViolation violation = new PmdRuleViolation(rule,
                     new File(ruleViolation.getFilename()),
-                    rule.getDescription(),
-                    getPosition(ruleViolation));
+                    ruleViolation.getDescription(), getPosition(ruleViolation));
             pmdRunListener.addViolation(violation);
         }
     }
