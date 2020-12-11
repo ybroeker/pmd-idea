@@ -4,6 +4,7 @@ import org.jetbrains.changelog.markdownToHTML
 
 plugins {
     id("java")
+    jacoco
     id("idea")
     // gradle-intellij-plugin - read more: https://github.com/JetBrains/gradle-intellij-plugin
     id("org.jetbrains.intellij") version "0.6.3"
@@ -152,4 +153,13 @@ dependencies {
 
 tasks.named<Test>("test") {
     useJUnitPlatform()
+}
+tasks.test {
+    finalizedBy(tasks.jacocoTestReport) // report is always generated after tests run
+}
+tasks.jacocoTestReport {
+    dependsOn(tasks.test) // tests are required to run before generating the report
+    reports {
+        xml.isEnabled = true
+    }
 }
