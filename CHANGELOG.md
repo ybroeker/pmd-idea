@@ -4,6 +4,7 @@
 
 ## [Unreleased]
 ### Added
+- Add support for PMD 6.30
 
 ### Changed
 

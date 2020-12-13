@@ -16,7 +16,7 @@ public class PmdVersionsTest {
     @Test
     public void shouldReturnLatestVersion() {
         assertThat(PmdVersions.getLatestVersion())
-                .isEqualTo(PmdVersion.of("6.29.0"));
+                .isEqualTo(PmdVersion.of("6.30.0"));
     }
 
 }
