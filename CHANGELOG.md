@@ -10,13 +10,6 @@
 ### Changed
 - Show description for rule violation instead generic rule description
 
-### Deprecated
-
-### Removed
-
-### Fixed
-
-### Security
 ## [1.2.0]
 ### Added
 - More quickfixes, see [QUICKFIXES](https://github.com/ybroeker/pmd-idea/blob/main/QUICKFIXES.md) for a complete List
