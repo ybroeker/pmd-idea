@@ -4,6 +4,18 @@
 
 ## [Unreleased]
 ### Added
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+### Security
+## [1.3.0]
+### Added
 - Add support for PMD 6.30
 - More quickfixes, see [QUICKFIXES](https://github.com/ybroeker/pmd-idea/blob/main/QUICKFIXES.md) for a complete List
 
