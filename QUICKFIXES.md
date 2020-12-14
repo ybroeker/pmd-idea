@@ -13,5 +13,7 @@ This plugin contains QuickFixes for the following rules:
 - FieldNamingConventions
   - opens IntelliJs rename dialog
 - MissingSerialVersionUID
+- UseLocaleWithCaseConversions
+  - Inserts `Locale.ROOT` or `Locale.getDefault()`
 
 Additionally, `@SuppressWarnings` can be automatically applied to members or classes for a specific rule.
