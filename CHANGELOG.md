@@ -7,6 +7,7 @@
 - Add support for PMD 6.30
 
 ### Changed
+- Show description for rule violation instead generic rule description
 
 ### Deprecated
 
