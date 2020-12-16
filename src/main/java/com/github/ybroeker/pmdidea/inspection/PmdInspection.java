@@ -85,7 +85,8 @@ public class PmdInspection extends LocalInspectionTool {
         final List<ProblemDescriptor> problemDescriptors = new ArrayList<>();
 
         for (final PmdRuleViolation violation : violations) {
-            problemDescriptors.add(problemDescriptorFactory.toProblemDescriptor(manager, file, violation));
+            final Optional<ProblemDescriptor> problemDescriptor = problemDescriptorFactory.toProblemDescriptor(manager, file, violation);
+            problemDescriptor.ifPresent(problemDescriptors::add);
         }
 
         return problemDescriptors.toArray(new ProblemDescriptor[0]);

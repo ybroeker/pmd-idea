@@ -3,6 +3,7 @@ package com.github.ybroeker.pmdidea.inspection;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 
 public final class PsiFiles {
@@ -10,7 +11,7 @@ public final class PsiFiles {
     private PsiFiles() {
     }
 
-    public static PsiElement getElement(@NotNull final PsiFile wrapped, final int line, final int column) {
+    public static @Nullable PsiElement getElement(@NotNull final PsiFile wrapped, final int line, final int column) {
         final int[] offsets = createLineOffsets(wrapped);
 
         return wrapped.findElementAt(offsets[line] + column - 1);

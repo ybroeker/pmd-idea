@@ -1,5 +1,7 @@
 package com.github.ybroeker.pmdidea.inspection;
 
+import java.util.Optional;
+
 import com.github.ybroeker.pmdidea.pmd.PmdRuleViolation;
 import com.github.ybroeker.pmdidea.quickfix.DelegateQuickFixFactory;
 import com.github.ybroeker.pmdidea.quickfix.QuickFixFactory;
@@ -24,15 +26,19 @@ public final class ProblemDescriptorFactory {
         this.project = project;
     }
 
-    public ProblemDescriptor toProblemDescriptor(@NotNull InspectionManager inspectionManager, final PsiFile file, final PmdRuleViolation violation) {
+    public Optional<ProblemDescriptor> toProblemDescriptor(@NotNull final InspectionManager inspectionManager, @NotNull final PsiFile file, @NotNull final PmdRuleViolation violation) {
         final PsiElement start = PsiFiles.getElement(file, violation.getPosition().getBeginLine(), violation.getPosition().getBeginColumn());
 
         LOGGER.trace("Found PsiElement '{}' in '{}' at {}:{} ", start, file.getName(), violation.getPosition().getBeginLine(), violation.getPosition().getBeginColumn());
 
-        return descriptor(inspectionManager, start, violation);
+        if (start == null) {
+            return Optional.empty();
+        }
+
+        return Optional.of(descriptor(inspectionManager, start, violation));
     }
 
-    protected ProblemDescriptor descriptor(@NotNull final InspectionManager inspectionManager, final PsiElement target, final PmdRuleViolation violation) {
+    private ProblemDescriptor descriptor(@NotNull final InspectionManager inspectionManager, @NotNull final PsiElement target, @NotNull final PmdRuleViolation violation) {
         return inspectionManager.createProblemDescriptor(
                 target,
                 getDescription(violation),
@@ -42,7 +48,7 @@ public final class ProblemDescriptorFactory {
                 false);
     }
 
-    private ProblemHighlightType getProblemHighlightType(final PmdRuleViolation violation) {
+    private ProblemHighlightType getProblemHighlightType(@NotNull final PmdRuleViolation violation) {
         switch (violation.getPmdRule().getPmdRulePriority()) {
             case LOW:
                 return ProblemHighlightType.WEAK_WARNING;
@@ -59,7 +65,7 @@ public final class ProblemDescriptorFactory {
         }
     }
 
-    private @Nullable LocalQuickFix[] getQuickFix(@NotNull final PsiElement target, @NotNull final PmdRuleViolation violation) {
+    private @NotNull LocalQuickFix[] getQuickFix(@NotNull final PsiElement target, @NotNull final PmdRuleViolation violation) {
         final QuickFixFactory service = project.getService(DelegateQuickFixFactory.class);
         return service.getQuickFix(target, violation).toArray(new LocalQuickFix[0]);
     }

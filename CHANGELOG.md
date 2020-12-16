@@ -3,17 +3,9 @@
 # pmd-idea Changelog
 
 ## [Unreleased]
-### Added
-
-### Changed
-
-### Deprecated
-
-### Removed
-
 ### Fixed
+- Fix NullPointerException while running inspection
 
-### Security
 ## [1.3.0]
 ### Added
 - Add support for PMD 6.30
