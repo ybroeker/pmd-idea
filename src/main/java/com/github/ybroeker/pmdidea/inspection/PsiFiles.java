@@ -14,7 +14,13 @@ public final class PsiFiles {
     public static @Nullable PsiElement getElement(@NotNull final PsiFile wrapped, final int line, final int column) {
         final int[] offsets = createLineOffsets(wrapped);
 
-        return wrapped.findElementAt(offsets[line] + column - 1);
+        if (line < 0 || line >= offsets.length) {
+            return null;
+        }
+
+        final int offset = offsets[line] + column - 1;
+
+        return wrapped.findElementAt(offset);
     }
 
     private static int[] createLineOffsets(@NotNull final PsiFile wrapped) {

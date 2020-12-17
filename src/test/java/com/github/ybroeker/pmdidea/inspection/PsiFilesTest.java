@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 import com.intellij.ide.highlighter.JavaFileType;
 import com.intellij.psi.*;
 import com.intellij.testFramework.LightJavaCodeInsightTestCase;
+import org.junit.Assert;
 
 
 public class PsiFilesTest extends LightJavaCodeInsightTestCase {
@@ -20,6 +21,42 @@ public class PsiFilesTest extends LightJavaCodeInsightTestCase {
 
         assertInstanceOf(element, PsiIdentifier.class);
         assertEquals("s", element.getText());
+    }
+
+    public void testLineOutOfBoundsShouldReturnNull() {
+        String fileContent = new BufferedReader(new InputStreamReader(PsiFilesTest.class.getResourceAsStream("/TestClass.java"))).lines().collect(Collectors.joining("\n"));
+        final PsiFile fileFromText = PsiFileFactory.getInstance(getProject()).createFileFromText("TestClass.java", JavaFileType.INSTANCE, fileContent);
+
+        final PsiElement element = PsiFiles.getElement(fileFromText, 11, 2);
+
+        Assert.assertNull(element);
+    }
+
+    public void testOffsetOutOfBoundsShouldReturnNull() {
+        String fileContent = new BufferedReader(new InputStreamReader(PsiFilesTest.class.getResourceAsStream("/TestClass.java"))).lines().collect(Collectors.joining("\n"));
+        final PsiFile fileFromText = PsiFileFactory.getInstance(getProject()).createFileFromText("TestClass.java", JavaFileType.INSTANCE, fileContent);
+
+        final PsiElement element = PsiFiles.getElement(fileFromText, 9, 200);
+
+        Assert.assertNull(element);
+    }
+
+    public void testNegativeLineShouldReturnNull() {
+        String fileContent = new BufferedReader(new InputStreamReader(PsiFilesTest.class.getResourceAsStream("/TestClass.java"))).lines().collect(Collectors.joining("\n"));
+        final PsiFile fileFromText = PsiFileFactory.getInstance(getProject()).createFileFromText("TestClass.java", JavaFileType.INSTANCE, fileContent);
+
+        final PsiElement element = PsiFiles.getElement(fileFromText, -1, 0);
+
+        Assert.assertNull(element);
+    }
+
+    public void testNegativeOffsetShouldReturnNull() {
+        String fileContent = new BufferedReader(new InputStreamReader(PsiFilesTest.class.getResourceAsStream("/TestClass.java"))).lines().collect(Collectors.joining("\n"));
+        final PsiFile fileFromText = PsiFileFactory.getInstance(getProject()).createFileFromText("TestClass.java", JavaFileType.INSTANCE, fileContent);
+
+        final PsiElement element = PsiFiles.getElement(fileFromText, 1, -200);
+
+        Assert.assertNull(element);
     }
 
 }

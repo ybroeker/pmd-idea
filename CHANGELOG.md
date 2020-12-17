@@ -3,17 +3,9 @@
 # pmd-idea Changelog
 
 ## [Unreleased]
-### Added
-
-### Changed
-
-### Deprecated
-
-### Removed
-
 ### Fixed
+- Fix IndexOutOfBoundsException while running inspection
 
-### Security
 ## [1.3.1]
 ### Fixed
 - Fix NullPointerException while running inspection
