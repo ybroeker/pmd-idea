@@ -3,6 +3,18 @@
 # pmd-idea Changelog
 
 ## [Unreleased]
+### Added
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+### Security
+## [1.3.2]
 ### Fixed
 - Fix IndexOutOfBoundsException while running inspection
 
