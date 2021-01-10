@@ -1,13 +1,10 @@
 package com.github.ybroeker.pmdidea.pmdwrapper;
 
-import java.io.*;
+import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.util.*;
 
 import com.github.ybroeker.pmdidea.pmd.*;
-import com.intellij.openapi.module.Module;
-import com.intellij.openapi.module.ModuleManager;
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.roots.OrderEnumerator;
 import net.sourceforge.pmd.*;
 import net.sourceforge.pmd.cache.AnalysisCache;
 import net.sourceforge.pmd.lang.*;
@@ -18,40 +15,23 @@ import static java.util.Collections.singletonList;
 
 public class PmdRunner implements Runnable {
 
-    private final Project project;
-    private final List<DataSource> files;
-    private final String ruleSets;
-    private final PmdOptions pmdOptions;
-
-    private final PmdRunListener pmdRunListener;
-
     private final AnalysisCache analysisCache;
 
     private final RuleSetFactory ruleSetFactory;
 
-    private PmdRunner(final Project project, final List<ScannableFile> files, final String rule, final PmdRunListener pmdRunListener, final PmdOptions pmdOptions, final AnalysisCache analysisCache, final RuleSetFactory ruleSetFactory) {
-        final List<DataSource> fileDataSources = new ArrayList<>(files.size());
-        for (final ScannableFile file : files) {
-            fileDataSources.add(new ScannableFileDataSource(file));
-        }
-        this.project = project;
-        this.files = fileDataSources;
-        this.ruleSets = rule;
-        this.pmdOptions = pmdOptions;
-        this.pmdRunListener = pmdRunListener;
-        this.analysisCache = analysisCache;
-        this.ruleSetFactory = ruleSetFactory;
-    }
+    private final PmdConfiguration pmdConfiguration;
 
     public PmdRunner(final PmdConfiguration pmdConfiguration, final AnalysisCache analysisCache, final RuleSetFactory ruleSetFactory) {
-        this(pmdConfiguration.getProject(), pmdConfiguration.getFiles(), pmdConfiguration.getRuleSets(), pmdConfiguration.getPmdRunListener(), pmdConfiguration.getPmdOptions(), analysisCache, ruleSetFactory);
+        this.pmdConfiguration = pmdConfiguration;
+        this.analysisCache = analysisCache;
+        this.ruleSetFactory = ruleSetFactory;
     }
 
     private PMDConfiguration getPmdConfiguration() {
         final PMDConfiguration pmdConfig = new PMDConfiguration();
 
         try {
-            pmdConfig.prependClasspath(getClassPath());
+            pmdConfig.prependClasspath(pmdConfiguration.getAuxClassPath());
         } catch (IOException e) {
             throw new UncheckedIOException(e);
         }
@@ -59,7 +39,7 @@ public class PmdRunner implements Runnable {
         pmdConfig.setAnalysisCache(analysisCache);
 
         final Language lang = LanguageRegistry.getLanguage("Java");
-        final String type = pmdOptions.getTargetJdk();
+        final String type = pmdConfiguration.getPmdOptions().getTargetJdk();
         if (type != null) {
             final LanguageVersion srcType = lang.getVersion(type);
             if (srcType != null) {
@@ -67,18 +47,9 @@ public class PmdRunner implements Runnable {
             }
         }
 
-        pmdConfig.setRuleSets(ruleSets);
+        pmdConfig.setRuleSets(pmdConfiguration.getRuleSets());
 
         return pmdConfig;
-    }
-
-    private String getClassPath() {
-        final Module[] modules = ModuleManager.getInstance(project).getModules();
-        final StringJoiner joiner = new StringJoiner(File.pathSeparator);
-        for (final Module module : modules) {
-            joiner.add(OrderEnumerator.orderEntries(module).recursively().getPathsList().getPathsString());
-        }
-        return joiner.toString();
     }
 
     @Override
@@ -88,30 +59,22 @@ public class PmdRunner implements Runnable {
             Thread.currentThread().setContextClassLoader(this.getClass().getClassLoader());
             final PMDConfiguration configuration = getPmdConfiguration();
 
+            final PmdRunListener pmdRunListener = pmdConfiguration.getPmdRunListener();
             final PmdRenderer renderer = new PmdRenderer(pmdRunListener);
 
             renderer.setWriter(new NullWriter());
             renderer.start();
 
-
-            final List<DataSource> dataSources = new ArrayList<>(files);
-            dataSources.sort(Comparator.comparing(ds -> ds.getNiceFileName(false, "")));
+            final List<DataSource> dataSources = getDataSources();
 
             final RuleContext ctx = new RuleContext();
 
             ctx.getReport().addListener(configuration.getAnalysisCache());
 
-            pmdRunListener.start(files.size());
-            AbstractPMDProcessor abstractPMDProcessor;
-            if (dataSources.size() > 1) {
-                abstractPMDProcessor = new MultiThreadProcessor(configuration);
-            } else {
-                abstractPMDProcessor = new MonoThreadProcessor(configuration);
-            }
+            final AbstractPMDProcessor abstractPMDProcessor = getPmdProcessor(configuration);
+            pmdRunListener.start(dataSources.size());
             abstractPMDProcessor.processFiles(ruleSetFactory, dataSources, ctx, singletonList(renderer));
 
-
-            // Persist the analysis cache
             configuration.getAnalysisCache().persist();
 
             renderer.end();
@@ -119,6 +82,28 @@ public class PmdRunner implements Runnable {
         } finally {
             Thread.currentThread().setContextClassLoader(original);
         }
+    }
+
+    public AbstractPMDProcessor getPmdProcessor(final PMDConfiguration configuration) {
+        AbstractPMDProcessor abstractPMDProcessor;
+        if (pmdConfiguration.getFiles().size() > 1) {
+            abstractPMDProcessor = new MultiThreadProcessor(configuration);
+        } else {
+            abstractPMDProcessor = new MonoThreadProcessor(configuration);
+        }
+
+        return abstractPMDProcessor;
+    }
+
+    public List<DataSource> getDataSources() {
+        final List<DataSource> dataSources = new ArrayList<>(pmdConfiguration.getFiles().size());
+        for (final ScannableFile file : pmdConfiguration.getFiles()) {
+            dataSources.add(new ScannableFileDataSource(file));
+        }
+
+        dataSources.sort(Comparator.comparing(ds -> ds.getNiceFileName(false, "")));
+
+        return dataSources;
     }
 
 }

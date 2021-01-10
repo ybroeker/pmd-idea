@@ -37,7 +37,7 @@ public class PmdAdapterFactoryTest {
 
         final PmdRunTestListener pmdRunTestListener = new PmdRunTestListener();
         final PmdOptions pmdOptions = new PmdOptions("1.8", version);
-        final PmdConfiguration configuration = new PmdConfiguration(fixture.getProject(), Collections.singletonList(new ScannableResource("/TestClass.java")), rules, pmdOptions, pmdRunTestListener);
+        final PmdConfiguration configuration = new PmdConfiguration(fixture.getProject(), Collections.singletonList(new ScannableResource("/TestClass.java")), rules, pmdOptions, pmdRunTestListener, null);
 
         pmdAdapter.runPmd(configuration);
 

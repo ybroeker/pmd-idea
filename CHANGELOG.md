@@ -3,17 +3,9 @@
 # pmd-idea Changelog
 
 ## [Unreleased]
-### Added
-
-### Changed
-
-### Deprecated
-
-### Removed
-
 ### Fixed
+- Remove non-existing files from aux-classpath, see [#15](https://github.com/ybroeker/pmd-idea/issues/15)  
 
-### Security
 ## [1.3.2]
 ### Fixed
 - Fix IndexOutOfBoundsException while running inspection
