@@ -3,6 +3,18 @@
 # pmd-idea Changelog
 
 ## [Unreleased]
+### Added
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+### Security
+## [1.3.3]
 ### Fixed
 - Remove non-existing files from aux-classpath, see [#15](https://github.com/ybroeker/pmd-idea/issues/15)  
 
