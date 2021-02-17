@@ -3,6 +3,18 @@
 # pmd-idea Changelog
 
 ## [Unreleased]
+### Added
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+### Security
+## [1.4.0]
 ### Changed
 - Support IntelliJ IDEA 2021.1
 
