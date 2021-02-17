@@ -3,17 +3,9 @@
 # pmd-idea Changelog
 
 ## [Unreleased]
-### Added
-
 ### Changed
+- Support IntelliJ IDEA 2021.1
 
-### Deprecated
-
-### Removed
-
-### Fixed
-
-### Security
 ## [1.3.3]
 ### Fixed
 - Remove non-existing files from aux-classpath, see [#15](https://github.com/ybroeker/pmd-idea/issues/15)  
