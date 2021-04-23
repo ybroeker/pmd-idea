@@ -4,6 +4,7 @@
 
 ## [Unreleased]
 ### Added
+- More quickfixes, see [QUICKFIXES](https://github.com/ybroeker/pmd-idea/blob/main/QUICKFIXES.md) for a complete List
 
 ### Changed
 

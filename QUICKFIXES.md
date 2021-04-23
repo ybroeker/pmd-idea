@@ -15,5 +15,6 @@ This plugin contains QuickFixes for the following rules:
 - MissingSerialVersionUID
 - UseLocaleWithCaseConversions
   - Inserts `Locale.ROOT` or `Locale.getDefault()`
+- ClassWithOnlyPrivateConstructorsShouldBeFinal
 
 Additionally, `@SuppressWarnings` can be automatically applied to members or classes for a specific rule.
