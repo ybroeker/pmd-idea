@@ -28,6 +28,7 @@ public final class DelegateQuickFixFactory implements QuickFixFactory {
             new UseLocaleWithCaseConversionsFixFactory(),
             new ClassWithOnlyPrivateConstructorsShouldBeFinalFixFactory(),
             new UseDiamondOperatorFixFactory(),
+            new MissingOverrideFixFactory(),
             new SuppressPmdFixFactory()
     );
 
