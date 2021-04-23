@@ -16,5 +16,6 @@ This plugin contains QuickFixes for the following rules:
 - UseLocaleWithCaseConversions
   - Inserts `Locale.ROOT` or `Locale.getDefault()`
 - ClassWithOnlyPrivateConstructorsShouldBeFinal
+- UseDiamondOperator
 
 Additionally, `@SuppressWarnings` can be automatically applied to members or classes for a specific rule.
