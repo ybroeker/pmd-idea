@@ -21,7 +21,7 @@ Quick fixes are available for some common rules.
 
 To scan your code manually, open the toolbar window and scan your entire project or the currently open file.
 
-PMD versions 6.0.1 to 6.30.0 are supported and bundled.
+PMD versions 6.0.1 to 6.33.0 are supported and bundled.
 
 <!-- Plugin description end -->
 
