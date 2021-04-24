@@ -18,5 +18,6 @@ This plugin contains QuickFixes for the following rules:
 - ClassWithOnlyPrivateConstructorsShouldBeFinal
 - UseDiamondOperator
 - MissingOverride
+- CollapsibleIfStatements
 
 Additionally, `@SuppressWarnings` can be automatically applied to members or classes for a specific rule.

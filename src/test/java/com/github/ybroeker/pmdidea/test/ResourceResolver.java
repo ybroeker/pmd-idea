@@ -1,6 +1,7 @@
 package com.github.ybroeker.pmdidea.test;
 
 import java.io.*;
+import java.lang.reflect.Method;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Path;
@@ -29,7 +30,8 @@ public class ResourceResolver implements ParameterResolver {
             final String value = resource.value();
             final Class<?> requiredType = parameterContext.getParameter().getType();
             final Class<?> testClass = extensionContext.getRequiredTestClass();
-            final URL url = testClass.getResource(value);
+            final Method method = extensionContext.getTestMethod().orElse(null);
+            final URL url = findResource(testClass, method, value);
 
             if (requiredType.isAssignableFrom(URL.class)) {
                 return url;
@@ -51,6 +53,28 @@ public class ResourceResolver implements ParameterResolver {
         } catch (IOException | URISyntaxException e) {
             throw new ParameterResolutionException("Could not resolve parameter", e);
         }
+    }
+
+    private URL findResource(Class<?> testClass, Method method, String value) {
+        if (method != null) {
+            URL methodResource = testClass.getResource(testClass.getSimpleName() + "/" + method.getName() + "/" + value);
+            if (methodResource != null) {
+                return methodResource;
+            }
+        }
+
+        URL classResource = testClass.getResource(testClass.getSimpleName() + "/" + value);
+        if (classResource != null) {
+            return classResource;
+        }
+
+        URL packageResource = testClass.getResource(value);
+        if (packageResource != null) {
+            return packageResource;
+        }
+
+        URL rootResource = testClass.getResource("/" + value);
+        return rootResource;
     }
 
 }

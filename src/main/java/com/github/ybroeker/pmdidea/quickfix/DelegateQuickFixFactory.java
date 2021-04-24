@@ -29,6 +29,7 @@ public final class DelegateQuickFixFactory implements QuickFixFactory {
             new ClassWithOnlyPrivateConstructorsShouldBeFinalFixFactory(),
             new UseDiamondOperatorFixFactory(),
             new MissingOverrideFixFactory(),
+            new CollapsibleIfStatementsFixFactory(),
             new SuppressPmdFixFactory()
     );
 
