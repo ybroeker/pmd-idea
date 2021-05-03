@@ -5,7 +5,7 @@
 ## [Unreleased]
 ### Added
 - More quickfixes, see [QUICKFIXES](https://github.com/ybroeker/pmd-idea/blob/main/QUICKFIXES.md) for a complete List
-- Update supported PMD versions to 6.33.0
+- Update supported PMD versions to 6.34.0
 
 ### Changed
 
