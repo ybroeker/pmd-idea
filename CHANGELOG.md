@@ -8,6 +8,7 @@
 - Add pmd-xml rules
 
 ### Changed
+- Support IntelliJ IDEA 2021.1
 
 ### Deprecated
 

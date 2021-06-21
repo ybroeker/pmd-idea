@@ -142,6 +142,7 @@ tasks[CopyClassesToSandboxTask.TEST_NAME].dependsOn("prepareTestingSandbox")
 dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.7.0")
     testImplementation("org.junit.jupiter:junit-jupiter-params:5.7.0")
+    testImplementation("org.assertj:assertj-core:3.20.2")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine")
     testCompileOnly("junit:junit:4.13")
     testRuntimeOnly("org.junit.vintage:junit-vintage-engine")
