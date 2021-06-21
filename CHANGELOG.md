@@ -4,6 +4,18 @@
 
 ## [Unreleased]
 ### Added
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+### Security
+## [1.6.0]
+### Added
 - Update supported PMD versions to 6.35.0
 - Add pmd-xml rules
 
