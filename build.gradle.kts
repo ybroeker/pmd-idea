@@ -146,9 +146,9 @@ dependencies {
     testCompileOnly("junit:junit:4.13")
     testRuntimeOnly("org.junit.vintage:junit-vintage-engine")
 
-    compileOnly("net.sourceforge.pmd:pmd-java:6.0.1")
+    compileOnly("net.sourceforge.pmd:pmd-core:6.0.1")
     val pmdwrapperCompile by configurations
-    pmdwrapperCompile("net.sourceforge.pmd:pmd-java:6.0.1");
+    pmdwrapperCompile("net.sourceforge.pmd:pmd-core:6.0.1");
 }
 
 tasks.named<Test>("test") {

@@ -1,16 +1,12 @@
 package com.github.ybroeker.pmdidea.build;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.OutputStream;
+import java.io.*;
 import java.nio.file.Files;
 import java.util.*;
 
 import groovy.lang.Closure;
 import org.apache.commons.io.FileUtils;
-import org.gradle.api.DefaultTask;
-import org.gradle.api.GradleException;
-import org.gradle.api.Project;
+import org.gradle.api.*;
 import org.gradle.api.artifacts.Configuration;
 import org.gradle.api.artifacts.Dependency;
 import org.gradle.api.plugins.JavaPlugin;
@@ -20,6 +16,10 @@ import org.gradle.language.base.plugins.LifecycleBasePlugin;
 
 
 public class ResolvePmdArtifactsTask extends DefaultTask {
+
+    public static final String PMD_GROUP_ID="net.sourceforge.pmd";
+
+    public static final List<String> ARTIFACT_IDS = Arrays.asList("pmd-java", "pmd-xml");
 
     public static final String NAME = "resolvePmdArtifacts";
 
@@ -80,8 +80,12 @@ public class ResolvePmdArtifactsTask extends DefaultTask {
     private Set<File> resolveDependencies(final Project project, final String version) {
         final String gradleVersion = version.replaceAll("\\.", "_");
         final Configuration gradleConfig = project.getConfigurations().create("pmd_" + gradleVersion);
-        final Dependency csDep = project.getDependencies().create("net.sourceforge.pmd:pmd-java:" + version);
-        gradleConfig.getDependencies().add(csDep);
+
+        for (final String artifactId : ARTIFACT_IDS) {
+            final Dependency csDep = project.getDependencies().create(PMD_GROUP_ID+":"+artifactId+":" + version);
+            gradleConfig.getDependencies().add(csDep);
+        }
+
         final Set<File> files = gradleConfig.resolve();
         project.getConfigurations().remove(gradleConfig);
         return files;
