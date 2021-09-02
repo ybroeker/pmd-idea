@@ -4,6 +4,7 @@
 
 ## [Unreleased]
 ### Added
+- Update supported PMD versions to 6.38.0
 
 ### Changed
 
