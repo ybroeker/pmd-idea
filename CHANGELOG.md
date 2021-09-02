@@ -4,6 +4,18 @@
 
 ## [Unreleased]
 ### Added
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+### Security
+## [1.7.0]
+### Added
 - Update supported PMD versions to 6.38.0
 
 ### Changed
