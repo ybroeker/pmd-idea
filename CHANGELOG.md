@@ -5,6 +5,7 @@
 ## [Unreleased]
 ### Added
 - Support for IntelliJ IDEA 2021.3
+- Use basic.xml as default ruleset (https://github.com/pmd/pmd/blob/master/pmd-java/src/main/resources/rulesets/java/basic.xml)
 
 ### Changed
 

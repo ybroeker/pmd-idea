@@ -10,6 +10,8 @@ import com.intellij.openapi.project.Project;
 @Service
 public final class RulesService {
 
+    private static final String BASIC_RULES = "rulesets/java/basic.xml";
+
     private final Project project;
 
     public RulesService(final Project project) {
@@ -30,7 +32,7 @@ public final class RulesService {
         final PmdConfigurationService service = project.getService(PmdConfigurationService.class);
         final String pathName = service.getState().getRulesPath();
         if (pathName == null || pathName.isEmpty()) {
-            return Optional.empty();
+            return Optional.of(BASIC_RULES);
         }
         final Path rulesPath = Paths.get(pathName);
         if (!Files.exists(rulesPath)) {
