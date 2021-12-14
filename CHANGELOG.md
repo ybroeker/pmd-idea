@@ -4,6 +4,18 @@
 
 ## [Unreleased]
 ### Added
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+### Security
+## [1.8.0]
+### Added
 - Support for IntelliJ IDEA 2021.3
 - Update supported PMD versions to 6.41
 
