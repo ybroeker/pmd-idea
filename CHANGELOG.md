@@ -4,12 +4,14 @@
 
 ## [Unreleased]
 ### Added
+- Support for IntelliJ IDEA 2021.3
 
 ### Changed
 
 ### Deprecated
 
 ### Removed
+- Drop support for IntelliJ IDEA < 2020.3
 
 ### Fixed
 
