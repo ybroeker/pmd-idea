@@ -72,6 +72,7 @@ tasks {
         sourceCompatibility = "11"
         targetCompatibility = "11"
         options.setDeprecation(true)
+        options.compilerArgs.add("-Xlint:unchecked")
     }
 
     patchPluginXml {
