@@ -5,6 +5,7 @@
 ## [Unreleased]
 ### Added
 - Support for IntelliJ IDEA 2022.1
+- Support for IntelliJ IDEA 2022.2
 
 ### Changed
 
