@@ -4,6 +4,18 @@
 
 ## [Unreleased]
 ### Added
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+### Security
+## [1.9.0]
+### Added
 - Support for IntelliJ IDEA 2022.1
 - Support for IntelliJ IDEA 2022.2
 - Update supported PMD versions to 6.48
